@@ -14,7 +14,7 @@ import json
 import time
 import errno
 import types
-import Queue
+import queue
 import socket
 import struct
 import urllib2
@@ -978,7 +978,7 @@ class CobraProxy:
             self._cobra_sflags |= SFLAG_JSON
 
         if self._cobra_spoolcnt:
-            self._cobra_sockpool = Queue.Queue()
+            self._cobra_sockpool = queue.Queue()
             # timeout reqeuired for pool usage
             if not self._cobra_timeout:
                 self._cobra_timeout = 60
