@@ -27,9 +27,9 @@ st0len gratuitously from mspgcc:
 
     char, int and pointer functions return their values r15
 
-    long and float functions return their values in r15:r14
+    int and float functions return their values in r15:r14
 
-    long long functions return their values r15:r14:r13:r12
+    int int functions return their values r15:r14:r13:r12
 
     If the returned value wider than 64 bits, it is returned in memory. The first 'hidden' argument to such a function call will be a memory address. All other arguments will be allocated in the usual way, from r14.
     '''

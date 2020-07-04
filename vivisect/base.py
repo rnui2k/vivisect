@@ -38,8 +38,8 @@ class VivEventCore(object):
 
     def __init__(self, vw=None, **kwargs):
         self._ve_vw = vw
-        self._ve_ehand = [None for x in xrange(VWE_MAX)]
-        self._ve_thand = [None for x in xrange(VTE_MAX)]
+        self._ve_ehand = [None for x in range(VWE_MAX)]
+        self._ve_thand = [None for x in range(VTE_MAX)]
         self._ve_lock = threading.Lock()
 
         # Find and put handler functions into the list
@@ -61,7 +61,7 @@ class VivEventCore(object):
         if h != None:
             try:
                 h(self._ve_vw, event, edata)
-            except Exception, e:
+            except Exception as  e:
                 traceback.print_exc()
 
     @firethread
@@ -101,8 +101,8 @@ class VivEventDist(VivEventCore):
             raise Exception("VivEventDist requires a vw argument")
 
         VivEventCore.__init__(self, vw)
-        self._ve_subs = [ [] for x in xrange(VWE_MAX) ]
-        self._ve_tsubs = [ [] for x in xrange(VTE_MAX) ]
+        self._ve_subs = [ [] for x in range(VWE_MAX) ]
+        self._ve_tsubs = [ [] for x in range(VTE_MAX) ]
 
         self.addEventCore(self)
 
@@ -110,23 +110,23 @@ class VivEventDist(VivEventCore):
         self._ve_fireListener()
 
     def addEventCore(self, core):
-        for i in xrange(VWE_MAX):
+        for i in range(VWE_MAX):
             h = core._ve_ehand[i]
             if h != None:
                 self._ve_subs[i].append(h)
 
-        for i in xrange(VTE_MAX):
+        for i in range(VTE_MAX):
             h = core._ve_thand[i]
             if h != None:
                 self._ve_tsubs[i].append(h)
 
     def delEventCore(self, core):
-        for i in xrange(VWE_MAX):
+        for i in range(VWE_MAX):
             h = core._ve_ehand[i]
             if h != None:
                 self._ve_subs[i].remove(h)
 
-        for i in xrange(VTE_MAX):
+        for i in range(VTE_MAX):
             h = core._ve_thand[i]
             if h != None:
                 self._ve_tsubs[i].remove(h)
@@ -144,7 +144,7 @@ class VivEventDist(VivEventCore):
         for h in hlist:
             try:
                 h(self._ve_vw, event, edata)
-            except Exception, e:
+            except Exception as  e:
                 traceback.print_exc()
 
         VivEventCore._ve_fireEvent(self, event, edata)
@@ -182,7 +182,7 @@ class VivWorkspaceCore(object, viv_impapi.ImportApi):
 
     def _snapInAnalysisModules(self):
         '''
-        Snap in the analysis modules which are appropriate for the 
+        Snap in the analysis modules which are appropriate for the
         format/architecture/platform of this workspace by calling
         '''
         if self._mods_loaded:
@@ -314,7 +314,7 @@ class VivWorkspaceCore(object, viv_impapi.ImportApi):
         self._call_graph.delNode(node)
         self.cfctx.flushFunction(fva)
 
-        # FIXME: do we want to now seek the function we *should* be in?  
+        # FIXME: do we want to now seek the function we *should* be in?
         # if xrefs_to, look for non-PROC code xrefs and take their function
         # if the previous instruction falls through, take its function
         # run codeblock analysis on that function to reassociate the blocks
@@ -487,14 +487,14 @@ class VivWorkspaceCore(object, viv_impapi.ImportApi):
 
     def _handleAUTOANALFIN(self, einfo):
         '''
-        This event is more for the storage subsystem than anything else.  It 
+        This event is more for the storage subsystem than anything else.  It
         marks the end of autoanalysis.  Any event beyond this is due to the
         end user or analysis modules they've executed.
         '''
         pass
 
     def _initEventHandlers(self):
-        self.ehand = [None for x in xrange(VWE_MAX)]
+        self.ehand = [None for x in range(VWE_MAX)]
         self.ehand[VWE_ADDLOCATION] = self._handleADDLOCATION
         self.ehand[VWE_DELLOCATION] = self._handleDELLOCATION
         self.ehand[VWE_ADDSEGMENT] = self._handleADDSEGMENT
@@ -537,7 +537,7 @@ class VivWorkspaceCore(object, viv_impapi.ImportApi):
         self.ehand[VWE_SYMHINT]  = self._handleSYMHINT
         self.ehand[VWE_AUTOANALFIN] = self._handleAUTOANALFIN
 
-        self.thand = [None for x in xrange(VTE_MAX)]
+        self.thand = [None for x in range(VTE_MAX)]
         self.thand[VTE_IAMLEADER] = self._handleIAMLEADER
         self.thand[VTE_FOLLOWME] = self._handleFOLLOWME
 
@@ -579,10 +579,10 @@ class VivWorkspaceCore(object, viv_impapi.ImportApi):
                     continue
                 try:
                     q.put_nowait((event, einfo))
-                except Queue.Full, e:
-                    print "FULL QUEUE DO SOMETHING"
+                except Queue.Full as  e:
+                    print("FULL QUEUE DO SOMETHING")
 
-        except Exception, e:
+        except Exception as  e:
             traceback.print_exc()
 
     def _fireTransEvent(self, event, einfo):
@@ -672,7 +672,7 @@ def trackDynBranches(cfctx, op, vw, bflags, branches):
     '''
     track dynamic branches
     '''
-    # FIXME: do we want to filter anything out?  
+    # FIXME: do we want to filter anything out?
     #  jmp edx
     #  jmp dword [ebx + 68]
     #  call eax

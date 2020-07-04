@@ -414,7 +414,7 @@ def loadPeIntoWorkspace(vw, pe, filename=None, baseaddr=None):
                 if vw.getName(symva) is None:
                     vw.makeName(symva, symname, filelocal=True)
 
-            except Exception, e:
+            except Exception as  e:
                 vw.vprint("Symbol Load Error: %s" % e)
 
         # Also, lets set the locals/args name hints if we found any

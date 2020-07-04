@@ -44,9 +44,9 @@ def vivEventsFromFile(filename):
     while True:
         try:
             events.extend( pickle.load(f) )
-        except EOFError, e:
+        except EOFError as  e:
             break
-        except pickle.UnpicklingError, e:
+        except pickle.UnpicklingError as  e:
             raise vivisect.InvalidWorkspace(filename, "invalid workspace file")
 
     f.close()
@@ -56,7 +56,7 @@ def vivEventsFromFile(filename):
         #import msgpack
         #try:
             #msgpack.dumps(event)
-        #except Exception, e:
+        #except Exception as  e:
             #print('Unsafe Event: %d %r' % event)
 
     return events

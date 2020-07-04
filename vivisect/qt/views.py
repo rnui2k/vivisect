@@ -314,7 +314,7 @@ def reprHextup(vw, item):
 
 def reprSmart(vw, item):
     ptype = type(item)
-    if ptype in (int, long):
+    if ptype in (int, int):
         if -1024 < item < 1024 :
             return str(item)
         elif vw.isValidPointer(item):

@@ -138,7 +138,7 @@ def analyze(vw):
             emu.setEmulationMonitor(wat)
             try:
                 emu.runFunction(va, maxhit=1)
-            except Exception, e:
+            except Exception as  e:
                 continue
             if wat.looksgood():
                 docode.append(va)

@@ -178,7 +178,7 @@ class VivSymbolikFuncPane(e_q_memory.EnviNavMixin, vq_save.SaveableWidget, QWidg
                     
             self.pathview.loadSymbolikPaths(paths)
 
-        except Exception, e:
+        except Exception as  e:
             traceback.print_exc()
             self.memcanvas.addText('ERROR: %s' % e)
 
@@ -223,7 +223,7 @@ class VivSymbolikFuncPane(e_q_memory.EnviNavMixin, vq_save.SaveableWidget, QWidg
         self.cureffects = effects
         try:
             self.rendSymbolikPath()
-        except Exception, e:
+        except Exception as  e:
             import sys
             sys.excepthook(*sys.exc_info())
 

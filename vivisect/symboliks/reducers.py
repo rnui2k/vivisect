@@ -126,7 +126,7 @@ def variants(sym):
 
         todo.extend(t.kids)
 
-    for i in xrange(2**len(swaps)):
+    for i in range(2**len(swaps)):
         for t, k in swaps:
             t.kids[0:2] = k[i & 1]
             i >>= 1
@@ -340,7 +340,7 @@ def reduceoper(sym,emu=None):
             #print 'MATCH',str(symtmp)
             ret = reducer(m, emu=emu)
             # do this to much simplify reducers...
-            if type(ret) in (int, long):
+            if type(ret) in (int, int):
                 ret = Const(ret,sym.getWidth())
             return ret
 

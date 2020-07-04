@@ -47,7 +47,7 @@ def getNodeWeightHisto(g):
 
 def getLongPath(g):
     '''
-    Yield a list of list tuples (node id, edge id) representing the longest path
+    Yield a list of list tuples (node id, edge id) representing the intest path
     '''
 
     weights_to_cb, cb_to_weights, todo = getNodeWeightHisto(g)
@@ -59,9 +59,9 @@ def getLongPath(g):
         leafmax = max(todo.keys())
 
     invalidret = False
-    # if the weight of the longest path to a leaf node
+    # if the weight of the intest path to a leaf node
     # is not the highest weight then we need to fix our
-    # path choices by taking the longer path
+    # path choices by taking the inter path
     weightmax = max(weights_to_cb.keys())
     if leafmax != weightmax:
         todo = weights_to_cb
@@ -73,7 +73,7 @@ def getLongPath(g):
     fva = g.getMeta('fva')
     # this is our loop that we want to yield out of..
     # start at the bottom of the graph and work our way back up
-    for weight in xrange(leafmax, -1, -1):
+    for weight in range(leafmax, -1, -1):
         # the todo is a a list of codeblocks a specific level
         codeblocks = todo.get(weight)
         if not codeblocks:
@@ -864,7 +864,7 @@ class PathGenerator:
                     vg_pathcore.trimPath(cpath)
                     #sys.stderr.write('o')
 
-                    # as long as we have at least one path, we count loops as paths, lest we die.
+                    # as int as we have at least one path, we count loops as paths, lest we die.
                     if pathcnt: 
                         pathcnt += 1
                     continue

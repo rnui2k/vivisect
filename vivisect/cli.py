@@ -116,7 +116,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
         for nid,ninfo in endblocks:
             paths = list(g.pathSearch(0, toid=nid))
             self.vprint('paths to 0x%.8x: %d' % (ninfo.get('cbva'), len(paths)))
-        
+
 
     def do_symboliks(self, line):
         '''
@@ -134,7 +134,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
         argv = e_cli.splitargs(line)
         try:
             opts,argv = getopt(argv, 'A:')
-        except Exception, e:
+        except Exception as  e:
             return self.do_help('symboliks')
 
         for opt,optarg in opts:
@@ -290,7 +290,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
             try:
                 fva = int(args[0], 0)
                 graph = viv_graph.buildFunctionGraph(self, fva)
-            except Exception, e:
+            except Exception as  e:
                 self.vprint(repr(e))
                 return
 
@@ -371,7 +371,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
                     else:
                         if pattern in oprepr:
                             addthis = True
-                
+
                 # only want one listing of each va, no matter how many times it matches
                 if addthis:
                     res.append(va)
@@ -442,7 +442,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
         argv = e_cli.splitargs(line)
         try:
             opts,args = getopt(argv, 'IS')
-        except Exception, e:
+        except Exception as  e:
             return self.do_help('fscope')
 
         if not len(args) or not len(opts):
@@ -673,7 +673,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
 
         try:
             idx = self.parseExpression(argv[1])
-        except Exception, e:
+        except Exception as  e:
             self.vprint("Invalid Index Expression: %s" % argv[1])
             return
 
@@ -729,13 +729,13 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
 
         try:
             frva = self.parseExpression(argv[0])
-        except Exception, e:
+        except Exception as  e:
             self.vprint("Invalid From Va: %s" % argv[0])
             return
 
         try:
             tova = self.parseExpression(argv[1])
-        except Exception, e:
+        except Exception as  e:
             self.vprint("Invalid To Va: %s" % argv[1])
             return
 
@@ -782,7 +782,7 @@ class VivCli(e_cli.EnviCli, vivisect.VivWorkspace):
         if line:
             try:
                 socket.gethostbyname(line)
-            except Exception, e:
+            except Exception as  e:
                 self.vprint('Invalid Remote Host: %s' % line)
 
             vtrace.remote = line

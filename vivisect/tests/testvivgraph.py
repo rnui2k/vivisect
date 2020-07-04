@@ -52,8 +52,8 @@ class VivGraphTest(unittest.TestCase):
 
     def SKIPtest_longpath_backedge(self):
         # TODO: We need to answer whether or not we support weird backedges in the
-        # longpath stuff
-        longpath = [
+        # intpath stuff
+        intpath = [
             'Rooty',
             'Lefty',
             'SonOfLefty',
@@ -115,7 +115,7 @@ class VivGraphTest(unittest.TestCase):
         g.addEdgeByNids('O', 'P')
 
         pathgenr = viv_graph.getLongPath(g)
-        longpath = pathgenr.next()
+        intpath = pathgenr.next()
         self.assertEqual(len(longpath), 11)
 
     def test_longpath_basic(self):
@@ -141,7 +141,7 @@ class VivGraphTest(unittest.TestCase):
         g.addEdgeByNids('K', 'L')
 
         pathgenr = viv_graph.getLongPath(g)
-        longpath = pathgenr.next()
+        intpath = pathgenr.next()
         self.assertEqual(len(longpath), 6)
 
     def test_weights(self):

@@ -2,7 +2,7 @@ import vivisect.impapi.posix.i386 as p386
 
 apitypes = {
     'DWORD':        'unsigned int',
-    'HANDLE':       'unsigned long',
+    'HANDLE':       'unsigned int',
         }
 
 # FIXME: complete the libc import api call work and update this cleanly

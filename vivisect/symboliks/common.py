@@ -32,7 +32,7 @@ def varsolve(name, width, emu=None):
         name += emu.getRandomSeed()
 
     md5sum = hashlib.md5(name).hexdigest()
-    return long(md5sum[:width*2], 16)
+    return int(md5sum[:width*2], 16)
 
 def evalSymbolik(reprstr):
     '''
@@ -151,7 +151,7 @@ class SymbolikBase:
         if other is None:
             return False
 
-        if type(other) in (int, long):
+        if type(other) in (int, int):
             return self.solve() == other
 
         return self.solve() == other.solve()
@@ -536,7 +536,7 @@ class Var(SymbolikBase):
 
         sym = vw.getSymByName(strval)
         if sym is not None:
-            value = long(sym)
+            value = int(sym)
             canvas.addVaText(strval, va=value)
             return
 
@@ -605,7 +605,7 @@ class LookupVar(Var):
         if emu != None:
             name += emu.getRandomSeed()
 
-        return long(hashlib.md5(name).hexdigest()[:self.width*2], 16)
+        return int(hashlib.md5(name).hexdigest()[:self.width*2], 16)
 
     def update(self, emu):
         offset = self.offset.update(emu=emu)

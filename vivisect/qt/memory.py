@@ -407,7 +407,7 @@ class VQVivMemoryView(e_mem_qt.VQMemoryWindow, viv_base.VivEventCore):
             if name != None:
                 title = name
 
-        except Exception, e:
+        except Exception as  e:
             title = 'expr error'
 
         if self._leading:

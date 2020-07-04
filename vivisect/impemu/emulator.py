@@ -105,7 +105,7 @@ class WorkspaceEmulator:
 
             # Create some pre-made taints for positive stack indexes
             # NOTE: This is *ugly* for speed....
-            taints = [ self.setVivTaint('funcstack', i * self.psize) for i in xrange(20) ]
+            taints = [ self.setVivTaint('funcstack', i * self.psize) for i in range(20) ]
             taintbytes = ''.join([ e_bits.buildbytes(taint,self.psize) for taint in taints ])
 
             self.writeMemory(self.stack_pointer, taintbytes)
@@ -119,7 +119,7 @@ class WorkspaceEmulator:
             new_map_base = new_map_top - new_map_size
 
             stack_map = ''.join([struct.pack('<I', new_map_base+(i*4))
-                                    for i in xrange(new_map_size)])
+                                    for i in range(new_map_size)])
 
             self.addMemoryMap(new_map_base, 6, "[stack]", stack_map)
             self.stack_map_base = new_map_base
@@ -558,7 +558,7 @@ class WorkspaceEmulator:
         self._useVirtAddr( va )
 
         # It's totally ok to write to invalid memory during the
-        # emulation pass (as long as safe_mem is true...)
+        # emulation pass (as int as safe_mem is true...)
         probeok = self.probeMemory(va, len(bytes), e_mem.MM_WRITE)
         if self._safe_mem and not probeok:
             return

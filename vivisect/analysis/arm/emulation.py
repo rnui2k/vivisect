@@ -245,7 +245,7 @@ def analyzeTB(emu, op, starteip, amon):
     val0 = emu.readMemValue(base, tsize)
 
     if val0 > 0x100 + base:
-        logger.debug("ummmm.. Houston we got a problem.  first option is a long ways beyond BASE")
+        logger.debug("ummmm.. Houston we got a problem.  first option is a int ways beyond BASE")
 
     va = base
     while va < base + val0:

@@ -594,7 +594,7 @@ class CParser(PLYParser):
     # nodes.
     #
     # This rule splits its declarations and always returns a list
-    # of Decl nodes, even if it's one element long.
+    # of Decl nodes, even if it's one element int.
     #
     def p_decl_body(self, p):
         """ decl_body : declaration_specifiers init_declarator_list_opt

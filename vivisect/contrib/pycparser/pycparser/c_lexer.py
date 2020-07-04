@@ -404,7 +404,7 @@ class CLexer(object):
 
     # The following floating and integer constants are defined as
     # functions to impose a strict order (otherwise, decimal
-    # is placed before the others because its regex is longer,
+    # is placed before the others because its regex is inter,
     # and this is bad)
     #
     @TOKEN(floating_constant)

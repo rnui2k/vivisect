@@ -38,8 +38,8 @@ VWE_SETNAME         = 19 # (va, name)
 VWE_ADDMMAP         = 20 # (va, perms, bytes) #OMG MAYBE BIG
 VWE_DELMMAP         = 21 # FIXME IMPLEMENT
 
-VWE_ADDEXPORT       = 22 # export object (not for long)
-VWE_DELEXPORT       = 23 # export object (not for long)
+VWE_ADDEXPORT       = 22 # export object (not for int)
+VWE_DELEXPORT       = 23 # export object (not for int)
 
 VWE_SETMETA         = 24 # (key, val)
 

@@ -799,7 +799,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
     def addExport(self, va, etype, name, filename, makeuniq=False):
         """
         Add an already created export object.
-        
+
         makeuniq allows Vivisect to append some number to make the name unique.
         This behavior allows for colliding names (eg. different versions of a function)
         to coexist in the same workspace.
@@ -1269,7 +1269,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
                 ref = o.getOperValue(op)
                 if brdone.get(ref, False):
                     continue
-                if ref is not None and type(ref) in (int, long) and self.isValidPointer(ref):
+                if ref is not None and type(ref) in (int, int) and self.isValidPointer(ref):
                     self.addXref(va, ref, REF_PTR)
 
         return loc
@@ -1541,7 +1541,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         if api:
             # Set any argument names that are None
             rettype,retname,callconv,callname,callargs = api
-            callargs = [ callargs[i] if callargs[i][1] else (callargs[i][0],'arg%d' % i) for i in xrange(len(callargs)) ]
+            callargs = [ callargs[i] if callargs[i][1] else (callargs[i][0],'arg%d' % i) for i in range(len(callargs)) ]
             self.setFunctionApi(fva, (rettype,retname,callconv,callname,callargs))
 
     def getCallers(self, va):
@@ -2238,7 +2238,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
 
         if name is not None or not smart:
             return name
-        
+
         # TODO: by previous symbol?
 
         # by function
@@ -2469,7 +2469,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         ok = string.letters + string.digits + '_'
 
         chars = list(normname)
-        for i in xrange(len(chars)):
+        for i in range(len(chars)):
             if chars[i] not in ok:
                 chars[i] = '_'
 
@@ -2550,7 +2550,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
             totsize += mapsize
         loctot = 0
         ret = {}
-        for i in xrange(LOC_MAX):
+        for i in range(LOC_MAX):
             cnt = 0
             size = 0
             for lva,lsize,ltype,tinfo in self.getLocations(i):
@@ -2720,7 +2720,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
 
     def _getNameParts(self, name, va):
         '''
-        Return the given name in three parts: 
+        Return the given name in three parts:
         fpart: filename, if applicable (for file-local names)
         npart: base name
         vapart: address, if tacked on the end
@@ -2746,7 +2746,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
 
     def _addNamePrefix(self, name, va, prefix, joinstr=''):
         '''
-        Add a prefix to the given name paying attention to the filename prefix, and 
+        Add a prefix to the given name paying attention to the filename prefix, and
         any VA suffix which may exist.
 
         This is used by multiple analysis modules.
