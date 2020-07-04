@@ -141,7 +141,7 @@ class VQMainCmdWindow(vq_hotkeys.HotKeyMixin, QMainWindow):
                         d.setObjectName(name)
                         d.vqRestoreState(settings,name,stub)
                         d.show()
-                except Exception, e:
+                except Exception as  e:
                     print('Error Building: %s: %s'  % (clsname,e))
 
         # Once dock widgets are loaded, we can restoreState

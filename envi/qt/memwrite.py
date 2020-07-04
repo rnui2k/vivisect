@@ -268,7 +268,7 @@ class MemWriteWindow(QWidget):
 
 class MockEmu(object):
     def parseExpression(self, expr):
-        return long(eval(expr, {}, {}))
+        return int(eval(expr, {}, {}))
 
     def readMemory(self, va, size):
         return '\x90' * size

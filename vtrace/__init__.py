@@ -188,7 +188,7 @@ class Trace(e_mem.IMemory, e_reg.RegisterContext, e_resolv.SymbolResolver, objec
             va = self.getProgramCounter()
 
         ops = []
-        for i in xrange(0, num):
+        for i in range(0, num):
             op = self.parseOpcode(va)
             ops.append(op)
             va += op.size
@@ -524,14 +524,14 @@ class Trace(e_mem.IMemory, e_reg.RegisterContext, e_resolv.SymbolResolver, objec
         back as \x00s (this probably goes in a mixin soon)
         """
         self.requireNotRunning()
-        return self.platformReadMemory(long(address), long(size))
+        return self.platformReadMemory(int(address), int(size))
 
     def writeMemory(self, address, bytez):
         """
         Write the given bytes to the address in the current trace.
         """
         self.requireNotRunning()
-        self.platformWriteMemory(long(address), bytez)
+        self.platformWriteMemory(int(address), bytez)
 
     def searchMemory(self, needle, regex=False):
         """
@@ -944,7 +944,7 @@ class Trace(e_mem.IMemory, e_reg.RegisterContext, e_resolv.SymbolResolver, objec
         Example: trace.parseExpression("ispoi(ecx+ntdll.RtlAllocateHeap)")
         """
         locs = VtraceExpressionLocals(self)
-        return long(e_expr.evaluate(expression, locs))
+        return int(e_expr.evaluate(expression, locs))
 
     def sendBreak(self):
         """
@@ -1206,7 +1206,7 @@ class TraceGroup(Notifier, v_util.TraceManager):
     def addTrace(self, proc):
         """
         Add a new tracer to this group the "proc" argument
-        may be either an long() for a pid (which we will attach
+        may be either an int() for a pid (which we will attach
         to) or an already attached (and broken) tracer object.
         """
 

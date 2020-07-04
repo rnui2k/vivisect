@@ -79,7 +79,7 @@ class SymbolCache:
             fd = file(cachefile,'rb')
             return json.load(fd)
 
-        except Exception, e:
+        except Exception as  e:
             return None
 
 class SymbolCachePath:

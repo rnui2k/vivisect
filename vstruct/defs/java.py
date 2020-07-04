@@ -148,7 +148,7 @@ class JavaClass(vstruct.VStruct):
         self.const_pool.vsAddElements( self.const_pool_cnt - 1, ConstPoolInfo )
 
     def pcb_interface_cnt(self):
-        for i in xrange( self.interface_cnt ):
+        for i in range( self.interface_cnt ):
             self.interfaces.vsAddElement( v_uint16( bigend=True ) )
 
     def pcb_fields_cnt(self):
@@ -230,6 +230,6 @@ if __name__ == '__main__':
 
             print c.getClassAttributes().keys()
 
-        except Exception, e:
+        except Exception as  e:
             print c.tree()
             traceback.print_exc()

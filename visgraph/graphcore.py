@@ -188,7 +188,7 @@ class Graph:
                 curlist = self.edgeprops[prop][curval]
                 curlist.remove( edge )
             self.edgeprops[prop][value].append(edge)
-        except TypeError, e:
+        except TypeError as  e:
             pass
 
         return True
@@ -216,7 +216,7 @@ class Graph:
                 curlist.remove( node )
 
             self.nodeprops[prop][value].append(node)
-        except TypeError, e:
+        except TypeError as  e:
             pass # no value indexing for un-hashable values
 
         return True
@@ -265,7 +265,7 @@ class Graph:
         for k,v in myprops.items():
             try:
                 self.nodeprops[k][v].append(node)
-            except TypeError, e:
+            except TypeError as  e:
                 pass
 
         return node
@@ -739,7 +739,7 @@ class HierGraph(Graph):
         Options:
             loopcnt - how many times may a single node be repeated in a path
             maxpath - maximum number of paths to yield
-            maxlen  - maximum "length" of a path ( trunc if too long )
+            maxlen  - maximum "length" of a path ( trunc if too int )
 
         NOTE: The last tuple in the list will have edge == None.
               However, if the last element in the list represents a

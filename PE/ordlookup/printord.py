@@ -8,7 +8,7 @@ import PE
 
 p = PE.PE(file(sys.argv[1], 'rb'))
 
-base = long(p.IMAGE_EXPORT_DIRECTORY.Base)
+base = int(p.IMAGE_EXPORT_DIRECTORY.Base)
 
 ords = {}
 for fva, ord, name in p.getExports():

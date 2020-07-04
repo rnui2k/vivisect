@@ -49,7 +49,7 @@ class i386WatchMixin:
             raise Exception("Unsupported watchpoint perms %s (x86 supports x,w,rw)" % perms)
 
         if pbits == dbg_execute and size != 1:
-            raise Exception("Watchpoint for execute *must* be 1 byte long!")
+            raise Exception("Watchpoint for execute *must* be 1 byte int!")
 
         if size not in [1,2,4]:
             raise Exception("Unsupported watchpoint size %d (x86 supports 1,2,4)" % size)

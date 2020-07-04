@@ -35,7 +35,7 @@ def maintthread(stime):
             while True:
                 try:
                     func(*args, **kwargs)
-                except Exception, e:
+                except Exception as  e:
                     print('MaintThread (%s) Error: %s' % (args[0],e))
                 time.sleep(stime)
 

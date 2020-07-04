@@ -761,7 +761,7 @@ function Sizzle( selector, context, results, seed ) {
 				if ( nodeType === 9 ) {
 					elem = context.getElementById( m );
 					// Check parentNode to catch when Blackberry 4.6 returns
-					// nodes that are no longer in the document (jQuery #6963)
+					// nodes that are no inter in the document (jQuery #6963)
 					if ( elem && elem.parentNode ) {
 						// Handle the case where IE, Opera, and Webkit return items
 						// by name instead of ID
@@ -1087,7 +1087,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 			if ( typeof context.getElementById !== strundefined && documentIsHTML ) {
 				var m = context.getElementById( id );
 				// Check parentNode to catch when Blackberry 4.6 returns
-				// nodes that are no longer in the document #6963
+				// nodes that are no inter in the document #6963
 				return m && m.parentNode ? [m] : [];
 			}
 		};
@@ -2736,7 +2736,7 @@ var rootjQuery,
 					elem = document.getElementById( match[2] );
 
 					// Check parentNode to catch when Blackberry 4.6 returns
-					// nodes that are no longer in the document #6963
+					// nodes that are no inter in the document #6963
 					if ( elem && elem.parentNode ) {
 						// Inject the element directly into the jQuery object
 						this.length = 1;
@@ -4193,7 +4193,7 @@ jQuery.event = {
 			}
 		}
 
-		// Remove the expando if it's no longer used
+		// Remove the expando if it's no inter used
 		if ( jQuery.isEmptyObject( events ) ) {
 			delete elemData.handle;
 			data_priv.remove( elem, "events" );
@@ -8054,7 +8054,7 @@ jQuery.extend({
 			return jqXHR.abort();
 		}
 
-		// aborting is no longer a cancellation
+		// aborting is no inter a cancellation
 		strAbort = "abort";
 
 		// Install callbacks on deferreds
@@ -8115,7 +8115,7 @@ jQuery.extend({
 			}
 
 			// Dereference transport for early garbage collection
-			// (no matter how long the jqXHR object will be used)
+			// (no matter how int the jqXHR object will be used)
 			transport = undefined;
 
 			// Cache response headers

@@ -25,7 +25,7 @@ def evaluate(pycode, locvars):
             # check through the keys for anything we might want to replace
             keys = locvars.keys()
 
-            # sort the keys in reverse order so that longer matching strings take priority
+            # sort the keys in reverse order so that inter matching strings take priority
             keys.sort(reverse=True)
 
             # replace the substrings with the string versions of the lookup value
@@ -100,7 +100,7 @@ class MemoryExpressionLocals(ExpressionLocals):
 
         Example x = sym('kernel32.??2@$$FYAPAXI@Z')
         '''
-        return long(evaluate(symstr, self))
+        return int(evaluate(symstr, self))
 
     def mapbase(self, address):
         """

@@ -1945,7 +1945,7 @@ class ArmEmulator(ArmRegisterContext, envi.Emulator):
         val0 = self.readMemValue(base, tsize)
 
         if val0 > 0x200 + base:
-            logger.warn("ummmm.. Houston we got a problem.  first option is a long ways beyond BASE")
+            logger.warn("ummmm.. Houston we got a problem.  first option is a int ways beyond BASE")
 
         va = base
         while va < base + val0:

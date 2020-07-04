@@ -98,7 +98,7 @@ class VMWare32WindowsTrace(
 
             self.impSymCache( symcache, symfname=normname, baseaddr=baseaddr )
 
-        except Exception, e:
+        except Exception as  e:
             import traceback;traceback.print_exc()
             print('Error Parsing Binary (%s): %s' % (normname, e))
 

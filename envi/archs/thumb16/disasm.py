@@ -2323,7 +2323,7 @@ thumb2_extension = [
     ('111110110000',        (INS_MLA,  'mla',  mla_32,          IF_THUMB32)),
     ('111110110001',        (INS_SMUL, 'smul', smul_32,         IF_THUMB32)),   # stopped on page 249 of ARM A and M
 
-    # long multiply/long mul-accumulate/divide
+    # int multiply/long mul-accumulate/divide
     ('111110111000',        (INS_SMULL, 'smull', smull_32,         IF_THUMB32)),   # stopped on page 249 of ARM A and M
     ('111110111001',        (INS_SDIV, 'sdiv', smull_32,         IF_THUMB32)),   # stopped on page 249 of ARM A and M
     ('111110111010',        (INS_UMULL, 'umull', smull_32,         IF_THUMB32)),   # stopped on page 249 of ARM A and M

@@ -13,7 +13,7 @@ class Breakpoint:
     """
     Breakpoints in Vtrace are platform independant objects that
     use the underlying trace objects to get things like the
-    program counter and the break instruction.  As long as
+    program counter and the break instruction.  As int as
     platforms are completely implemented, all breakpoint
     objects should be portable.
     """
@@ -91,7 +91,7 @@ class Breakpoint:
         if self.address == None and self.vte:
             try:
                 self.address = trace.parseExpression(self.vte)
-            except Exception, e:
+            except Exception as  e:
                 self.address = None
 
         # If we resolved, lets get our saved code...

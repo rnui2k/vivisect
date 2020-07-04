@@ -64,7 +64,7 @@ class ScriptThread(threading.Thread):
     def run(self):
         try:
             exec(self.cobj, self.locals)
-        except Exception, e:
+        except Exception as  e:
             traceback.print_exc()
             print('Script Error: %s' % repr(e))
 
@@ -372,7 +372,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         # Do we have a symbol?
         sym = self.trace.getSymByAddr(address, exact=False)
         if sym != None:
-            return "%s + %d" % (repr(sym),address-long(sym))
+            return "%s + %d" % (repr(sym),address-int(sym))
 
         # Check if it's a thread's stack
         for tid,tinfo in self.trace.getThreads().items():
@@ -609,7 +609,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
             vnames.sort()
             for n in vnames:
                 val = vars.get(n)
-                if type(val) in (int, long):
+                if type(val) in (int, int):
                     self.vprint("%20s = 0x%.8x" % (n,val))
                 else:
                     rstr = repr(val)
@@ -638,7 +638,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
             size = t.parseExpression(args)
             base = t.allocateMemory(size)
             self.vprint("Allocated %d bytes at: 0x%.8x" % (size, base))
-        except Exception, e:
+        except Exception as  e:
             traceback.print_exc()
             self.vprint("Allocation Error: %s" % e)
 
@@ -769,7 +769,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         argv = e_cli.splitargs(args)
         try:
             opts,args = getopt(argv, 'Ccd')
-        except Exception, e:
+        except Exception as  e:
             return self.do_help('ignore')
 
         remove = False
@@ -854,7 +854,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         argv = e_cli.splitargs(line)
         try:
             opts,args = getopt(argv, "A")
-        except Exception, e:
+        except Exception as  e:
             return self.do_help("suspend")
 
         for opt,optarg in opts:
@@ -905,7 +905,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         argv = e_cli.splitargs(line)
         try:
             opts,args = getopt(argv, "A")
-        except Exception, e:
+        except Exception as  e:
             return self.do_help("suspend")
 
         for opt,optarg in opts:
@@ -1000,7 +1000,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         argv = e_cli.splitargs(line)
         try:
             opts,args = getopt(argv, "A:BC:RVUQ")
-        except Exception, e:
+        except Exception as  e:
             return self.do_help("stepi")
 
         until = None
@@ -1076,7 +1076,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
                             try:
                                 val = oper.getOperValue(op, emu=t)
                                 self.canvas.addText('0x%.8x ' % val)
-                            except Exception, e:
+                            except Exception as  e:
                                 self.canvas.addText(str(e))
 
                     if not quiet:
@@ -1087,7 +1087,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
 
                     elif op.iflags & envi.IF_RET:
                         depth -= 1
-                except Exception, e:
+                except Exception as  e:
                     print "[E@0x%x] %r" % (pc, e)
 
 
@@ -1257,7 +1257,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
 
         if icount != None:
             addr = self.trace.getProgramCounter()
-            for i in xrange(icount):
+            for i in range(icount):
                 addr += len(self.trace.parseOpcode(addr))
 
             until = addr
@@ -1474,7 +1474,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
 
             self.trace.release()
 
-        except Exception, e:
+        except Exception as  e:
             self.vprint('Exception during quit (may need: quit force): %s' % e)
 
     def do_detach(self, line):
@@ -1514,7 +1514,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         pid = None
         try:
             pid = int(args)
-        except ValueError, e:
+        except ValueError as  e:
 
             for mypid, pname in self.trace.ps():
                 if pname.find(args) != -1:
@@ -1569,7 +1569,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         if len(line):
             try:
                 index = acnames.index(line)
-            except ValueError, e:
+            except ValueError as  e:
                 self.vprint("Unknown event name: %s" % line)
                 return
             sig = acvals[index]
@@ -1715,7 +1715,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
         argv = e_cli.splitargs(line)
         try:
             opts,args = getopt(argv, "fF:e:d:o:r:L:Cc:S:W:")
-        except Exception, e:
+        except Exception as  e:
             return self.do_help('bp')
 
         pycode = None
@@ -1765,7 +1765,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
                         bpid = self.trace.addBreakpoint(bp)
                         self.vdbUIEvent('vdb:addbreak', bpid)
                         self.vprint("Added: %s" % str(sym))
-                    except Exception, msg:
+                    except Exception as  msg:
                         self.vprint("WARNING: %s" % str(msg))
 
             elif opt == "-W":
@@ -1778,7 +1778,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
                     for sym in self.trace.searchSymbols(regex, libname=libname):
 
                         symstr = str(sym)
-                        symval = long(sym)
+                        symval = int(sym)
                         if self.trace.getBreakpointByAddr(symval) != None:
                             self.vprint('Duplicate (0x%.8x) %s' % (symval, symstr))
                             continue
@@ -1786,7 +1786,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
                         self.trace.addBreakpoint(bp)
                         self.vprint('Added: %s' % symstr)
 
-                except re.error, e:
+                except re.error as  e:
                     self.vprint('Invalid Regular Expression: %s' % regex)
                     return
 
@@ -2077,7 +2077,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
 
         try:
             opts,args = getopt(argv, 'cCE:HIL:R')
-        except Exception ,e:
+        except Exception  as e:
             return self.do_help('stalker')
 
         trace = self.trace
@@ -2105,7 +2105,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
             elif opt == '-L':
                 libname, regex = optarg.split(':', 1)
                 for sym in trace.searchSymbols(regex, libname=libname):
-                    v_stalker.addStalkerEntry(trace, long(sym))
+                    v_stalker.addStalkerEntry(trace, int(sym))
                     self.vprint('Stalking %s' % str(sym))
 
             elif opt == '-R':

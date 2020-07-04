@@ -1891,7 +1891,7 @@ class ArmInstructionSet(unittest.TestCase):
             try:
                 # try register first
                 emu.setRegisterByName(tgt, val)
-            except e_exc.InvalidRegisterName, e:
+            except e_exc.InvalidRegisterName as  e:
                 # it's not a register
                 if type(tgt) == str and tgt.startswith("PSR_"):
                     # it's a flag
@@ -1916,7 +1916,7 @@ class ArmInstructionSet(unittest.TestCase):
                     success = 0
                 else:  # should be an else
                     raise Exception("FAILED(reg): (%r test#%d)  %s  !=  0x%x (observed: 0x%x) \n\t(setters: %r)\n\t(test: %r)" % (op, tidx, tgt, val, testval, settersrepr, testsrepr))
-            except e_exc.InvalidRegisterName, e:
+            except e_exc.InvalidRegisterName as  e:
                 # it's not a register
                 if type(tgt) == str and tgt.startswith("PSR_"):
                     # it's a flag
@@ -2072,7 +2072,7 @@ def genAdvSIMDtests():
                         outarm.append("        (REV_ALL_ARM, '%s', 0x%x, '%s', 0, ())," % (bytezarm.encode('hex'), 0x4560, oparm))
                         outthumb.append("        (REV_ALL_ARM, '%s', 0x%x, '%s', 0, ())," % (bytezthumb.encode('hex'), 0x4561, opthumb))
 
-                    except envi.InvalidInstruction, e:
+                    except envi.InvalidInstruction as  e:
                         print e
                         bad += 1
                         if bad % 25 == 0:

@@ -1055,7 +1055,7 @@ def getServicesList():
         #p = POINTER(ENUM_SERVICE_STATUS_PROCESS)(addressof(buf))
         p = cast(buf, POINTER(ENUM_SERVICE_STATUS_PROCESS))
 
-        for i in xrange(dwSvcCount.value):
+        for i in range(dwSvcCount.value):
             pid = p[i].ServiceStatusProcess.dwProcessId
             name = p[i].lpServiceName
             descr = p[i].lpDisplayName
@@ -1586,7 +1586,7 @@ class WindowsMixin:
 
             plist = []
             for i in range(exparam):
-                plist.append(long(event.u.Exception.ExceptionRecord.ExceptionInformation[i]))
+                plist.append(int(event.u.Exception.ExceptionRecord.ExceptionInformation[i]))
 
             eventdict["ExceptionCode"] = excode
             eventdict["ExceptionFlags"] = exflags
@@ -2174,7 +2174,7 @@ class Win32SymbolParser:
 
             self.symCleanup()
 
-        except Exception, e:
+        except Exception as  e:
             traceback.print_exc()
             raise
 

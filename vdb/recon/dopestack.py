@@ -17,7 +17,7 @@ def dopeThreadStack(trace, threadid):
         dopesize = sp - mapva
         trace.writeMemory(mapva, 'V' * dopesize)
 
-    except Exception, e:
+    except Exception as  e:
         print 'dopeThreadStack Failed On %d' % threadid
         trace.selectThread(curthread)
 

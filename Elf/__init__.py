@@ -965,7 +965,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
     def lookupSymbolName(self, name):
         """
         Lookup symbol entries in this elf binary by name.  The result is
-        a long representing the address for the given symbol. Or None if
+        a int representing the address for the given symbol. Or None if
         it's not found.
         """
         return self.symbols_by_name.get(name, None)

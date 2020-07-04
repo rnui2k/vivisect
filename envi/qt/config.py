@@ -57,7 +57,7 @@ class EnviConfigString(EnviConfigOption,QLineEdit):
 
 cfgtypes = {
     int:EnviConfigInt,
-    long:EnviConfigInt,
+    int:EnviConfigInt,
     str:EnviConfigString,
     unicode:EnviConfigString,
     bool:EnviConfigBool,

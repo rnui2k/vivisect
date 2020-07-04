@@ -73,7 +73,7 @@ def isValidScript(scriptpath):
     try:
         cobj = compile(contents, scriptpath, 'exec')
         return True
-    except Exception, e:
+    except Exception as  e:
         pass
     
     return False
@@ -462,7 +462,7 @@ class EnviCli(Cmd):
             code.interact(local=locals)
 
     def parseExpression(self, expr):
-        return long(e_expr.evaluate(expr, self.getExpressionLocals()))
+        return int(e_expr.evaluate(expr, self.getExpressionLocals()))
 
     def do_binstr(self, line):
         '''
@@ -498,7 +498,7 @@ class EnviCli(Cmd):
             sym = self.symobj.getSymByAddr(value, exact=False)
             if sym != None:
                 self.canvas.addText(" ")
-                self.canvas.addVaText("%s + %d" % (repr(sym),value-long(sym)), value)
+                self.canvas.addVaText("%s + %d" % (repr(sym),value-int(sym)), value)
         else:
             self.canvas.addText("0x%.8x (%d)" % (value, value))
 
@@ -560,7 +560,7 @@ class EnviCli(Cmd):
         try:
             cobj = compile(contents, scriptpath, 'exec')
             exec(cobj, locals)
-        except Exception, e:
+        except Exception as  e:
             self.vprint( traceback.format_exc() )
             self.vprint('SCRIPT ERROR: %s' % e)
 
@@ -670,7 +670,7 @@ class EnviCli(Cmd):
         if options.range_search:
             try:
                 addrexpr, sizeexpr = options.range_search.split(":")
-            except Exception, e:
+            except Exception as  e:
                 self.vprint(repr(e))
                 return self.do_help('search')
             addr = self.parseExpression(addrexpr)
@@ -725,7 +725,7 @@ class EnviCli(Cmd):
 
             sym = self.symobj.getSymByAddr(va, exact=False)
             if sym is not None:
-                ret = "%s + 0x%x" % (repr(sym), va-long(sym))
+                ret = "%s + 0x%x" % (repr(sym), va-int(sym))
 
         except Exception:
             ret = hex(va)
@@ -891,7 +891,7 @@ class EnviMutableCli(EnviCli):
         argv = splitargs(line)
         try:
             opts, args = getopt(argv, "S:")
-        except Exception, e:
+        except Exception as  e:
             return self.do_help("memprotect")
 
         for opt,optarg in opts:

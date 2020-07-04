@@ -77,8 +77,8 @@ class StructParser:
         if cls == vs_prim.v_int8:
             return lambda: vs_prim.v_str(size=size)
 
-        return lambda: vstruct.VArray( [ cls() for i in xrange(size) ] )
-        #return [ cls() for i in xrange(size) ]
+        return lambda: vstruct.VArray( [ cls() for i in range(size) ] )
+        #return [ cls() for i in range(size) ]
 
     def c_getIdentType(self, itelem):
         ename, einst = itelem

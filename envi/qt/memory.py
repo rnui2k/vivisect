@@ -285,14 +285,14 @@ class VQMemoryWindow(vq_hotkey.HotKeyMixin, EnviNavMixin, vq_save.SaveableWidget
 
         try:
             addr = self._mem_obj.parseExpression(expr)
-        except Exception, e:
+        except Exception as  e:
             #import traceback;traceback.print_exc()
             self.mem_canvas.addText('Invalid Address: %s (%s)' % (expr, e))
             return None, None
 
         try:
             size = self._mem_obj.parseExpression(sizeexpr)
-        except Exception, e:
+        except Exception as  e:
             self.mem_canvas.addText('Invalid Size: %s (%s)' % (expr, e))
             return None, None
 
@@ -321,7 +321,7 @@ class VQMemoryWindow(vq_hotkey.HotKeyMixin, EnviNavMixin, vq_save.SaveableWidget
         self.mem_canvas.setRenderer(rname)
         try:
             self.mem_canvas.renderMemory(addr, size)
-        except Exception, e:
+        except Exception as  e:
             self.mem_canvas.addText('Render Exception: %s (%s)' % (hex(addr), e))
 
     def clearText(self):

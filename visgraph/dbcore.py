@@ -74,11 +74,11 @@ def rollsafe(f):
     def doroll(*args, **kwargs):
         try:
             return f(*args, **kwargs)
-        except Exception, e:
+        except Exception as  e:
             traceback.print_exc()
             try:
                 args[0].db.rollback()
-            except Exception, e:
+            except Exception as  e:
                 pass
             raise
 
@@ -283,7 +283,7 @@ class DbGraphStore:
         if isinstance(value, bool):
             value = int(value)
 
-        if isinstance(value, int) or isinstance(value, long):
+        if isinstance(value, int) or isinstance(value, int):
             q = 'UPDATE vg_node_props SET intval=%s,created=NOW() WHERE nid=%s and pname=%s RETURNING nid'
             q1 = 'INSERT INTO vg_node_props (nid, pname, intval) VALUES (%s,%s,%s)'
         else:
@@ -488,7 +488,7 @@ class DbGraphStore:
         if isinstance(value, bool):
             value = int(value)
 
-        if isinstance(value, int) or isinstance(value, long):
+        if isinstance(value, int) or isinstance(value, int):
             q = 'UPDATE vg_edge_props SET intval=%s WHERE eid=%s and pname=%s RETURNING eid'
             q1 = 'INSERT INTO vg_edge_props (eid, pname, intval) VALUES (%s,%s,%s)'
         else:

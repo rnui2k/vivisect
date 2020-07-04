@@ -97,7 +97,7 @@ class OpcodeRenderer(e_canvas.MemoryRenderer):
             suffix = self._getOpcodeSuffix(trace, va, op)
             if suffix:
                 mcanv.addText(' ;'+suffix)
-        except Exception, e:
+        except Exception as  e:
             mcanv.addText('; suffix error: %s' % e)
 
         mcanv.addText("\n")
@@ -131,7 +131,7 @@ class SymbolRenderer(e_canvas.MemoryRenderer):
         if isptr:
             sym = trace.getSymByAddr(p, exact=False)
             if sym != None:
-                mcanv.addText(' %s + %d' % (repr(sym), p-long(sym)))
+                mcanv.addText(' %s + %d' % (repr(sym), p-int(sym)))
 
         mcanv.addText('\n')
 

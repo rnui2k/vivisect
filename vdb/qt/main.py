@@ -112,7 +112,7 @@ class VdbCmdWidget(vqt.cli.VQCli, vtrace.qt.VQTraceNotifier):
             for line in lines:
                 line = self.cli.aliascmd(line)
                 cmd.Cmd.onecmd(self.cli, line)
-        except (KeyboardInterrupt, SystemExit):
+        except (KeyboardInterrupt as  SystemExit):
             raise
 
         if self.cli.shutdown.isSet():
@@ -406,7 +406,7 @@ class VdbWindow(vq_app.VQMainCmdWindow):
                 else:
                     t.detach()
 
-        except Exception, e:
+        except Exception as  e:
             print('Error Detaching: %s' % e)
 
         return vq_app.VQMainCmdWindow.closeEvent(self, event)

@@ -461,7 +461,7 @@ class LinuxMixin(v_posix.PtraceMixin, v_posix.PosixMixin):
                     # We use SIGSTOP here because they can't mask it.
                     os.kill(tid, signal.SIGSTOP)
                     os.waitpid(tid, 0x40000002)
-                except Exception, e:
+                except Exception as  e:
                     print "WARNING TID is invalid %d %s" % (tid,e)
         return pid,status
 
@@ -658,8 +658,8 @@ class LinuxMixin(v_posix.PtraceMixin, v_posix.PosixMixin):
             permstr = sline[1]
             fname = sline[-1].strip()
             addrs = addrs.split("-")
-            base = long(addrs[0],16)
-            max = long(addrs[1],16)
+            base = int(addrs[0],16)
+            max = int(addrs[1],16)
             mlen = max-base
 
             if "r" in permstr:

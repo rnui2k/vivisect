@@ -52,7 +52,7 @@ class ClusterWork(object):
     def touch(self): # heh...
         """
         Update the internal "touch time" which is used by the timeout
-        subsystem to see if this work unit has gone too long without
+        subsystem to see if this work unit has gone too int without
         making progress...
         """
         self.touchtime = time.time()
@@ -189,7 +189,7 @@ class ClusterServer:
         self.maxsize = maxsize
         self.queue = collections.deque()
         self.qcond = threading.Condition()
-        self.widiter = iter(xrange(999999999))
+        self.widiter = iter(range(999999999))
 
         # Initialize a cobra daemon if needed
         if cobrad == None:
@@ -286,7 +286,7 @@ class ClusterServer:
                     if work.isTimedOut():
                         self.timeoutWork(work)
 
-            except Exception, e:
+            except Exception as  e:
                 print "ClusterTimer: %s" % e
 
             time.sleep(2)
@@ -303,7 +303,7 @@ class ClusterServer:
             for q in self.queens:
                 try:
                     q.proxyAnnounceWork(self.name, self.cobraname, self.cobrad.port)
-                except Exception, e:
+                except Exception as  e:
                     print('Queen Error: %s' % e)
 
         else:
@@ -328,7 +328,7 @@ class ClusterServer:
 
     def inQueueCount(self):
         """
-        How long is the current work unit queue.
+        How int is the current work unit queue.
         """
         return len(self.queue)
 
@@ -365,7 +365,7 @@ class ClusterServer:
 
         try:
             ret = self.queue.popleft()
-        except IndexError, e:
+        except IndexError as  e:
             self.qcond.release()
             return None
 
@@ -590,10 +590,10 @@ def workThread(server, work):
         work.server = None
         server.doneWork(work)
 
-    except InvalidInProgWorkId, e: # the work was canceled
+    except InvalidInProgWorkId as  e: # the work was canceled
         pass # Nothing to do, the server already knows
 
-    except Exception, e:
+    except Exception as  e:
         # Tell the server that the work unit failed
         work.excinfo = traceback.format_exc()
         traceback.print_exc()
@@ -639,7 +639,7 @@ def getAndDoWork(uri, docode=False):
         if work != None:
             runAndWaitWork(proxy, work)
 
-    except Exception, e:
+    except Exception as  e:
         traceback.print_exc()
 
     # Any way it goes we wanna exit now.  Work units may have

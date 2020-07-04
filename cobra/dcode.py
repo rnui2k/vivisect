@@ -27,7 +27,7 @@ class DcodeServer:
 
         try:
             fobj, filename, typeinfo = imp.find_module(fullname, path)
-        except ImportError, e:
+        except ImportError as  e:
             return None
 
         if os.path.isdir(filename):

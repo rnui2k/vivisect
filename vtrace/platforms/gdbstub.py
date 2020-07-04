@@ -207,13 +207,13 @@ class GdbStubMixin:
                     self._gdb_sock.recv(1)
                     self._gdb_sock.sendall('+')
 
-                except socket.timeout, t:
+                except socket.timeout as  t:
                     pass
 
                 self._gdb_sock.settimeout(None)
                 break
 
-            except Exception, e:
+            except Exception as  e:
                 time.sleep(0.2)
                 tries += 1
 
@@ -601,7 +601,7 @@ class GdbStubMixin_old(e_registers.RegisterContext):
                     parser.loadSymsIntoTrace(self, normname)
                 finally:
                     os.unlink(tfilename)
-            except Exception, e:
+            except Exception as  e:
                 print e
 
         else:
@@ -625,7 +625,7 @@ class GdbStubMixin_old(e_registers.RegisterContext):
     def _getVmwareIdtr(self):
         istr = self._monitorCommand('r idtr')
         m = re.match('.* base=(0x\w+) .*', istr)
-        idtr = long(m.groups()[0], 0)
+        idtr = int(m.groups()[0], 0)
         return idtr
 
     def _getNtOsKrnl(self, idtr):
@@ -635,7 +635,7 @@ class GdbStubMixin_old(e_registers.RegisterContext):
             while not self.readMemory(kptr, 16).startswith('MZ\x90\x00'):
                 kptr -= 4096
             return kptr
-        except Exception, e:
+        except Exception as  e:
             return None
 
     def _enumTargetOs(self, fsbase):
@@ -706,7 +706,7 @@ class GdbStubMixin_old(e_registers.RegisterContext):
             self._enumTargetOs(fsbase)
             #print monreg
             #m = re.match('FS =\w+ (\w+)', monreg, re.G)
-            #fsbase = long(m.groups()[0], 0)
+            #fsbase = int(m.groups()[0], 0)
             #print 'FSBASE',hex(fsbase)
 
         elif monhelp.find('linuxoffsets') != -1:
@@ -727,7 +727,7 @@ class GdbStubMixin_old(e_registers.RegisterContext):
                 fields = [-1,]
                 try:
                     fields = self.readMemoryFormat(win_kpcr, '<7Q')
-                except Exception, e:
+                except Exception as  e:
                     print 'Exception:',e
 
                 # FIXME other heuristics for linux/bsd/etc...
@@ -810,12 +810,12 @@ class GdbStubMixin_old(e_registers.RegisterContext):
 
         try:
             self.addBreakpoint(KeBugCheckBreak('nt.KeBugCheck'))
-        except Exception, e:
+        except Exception as  e:
             print 'Error Seting KeBugCheck Bp: %s' % e
 
         try:
             self.addBreakpoint(KeBugCheckBreak('nt.KeBugCheckEx'))
-        except Exception, e:
+        except Exception as  e:
             print 'Error Seting KeBugCheck Bp: %s' % e
 
 
