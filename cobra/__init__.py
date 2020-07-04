@@ -156,8 +156,8 @@ class CobraMethod:
         name = self.proxy._cobra_name
         if verbose: print("CALLING:",name,self.methname,repr(args)[:20],repr(kwargs)[:20])
 
-        async = kwargs.pop('_cobra_async',None)
-        if async:
+        is_async = kwargs.pop('_cobra_async',None)
+        if is_async:
             csock = self.proxy._cobra_getsock()
             return csock.cobraAsyncTransaction(COBRA_CALL, name, (self.methname, args, kwargs))
 
