@@ -17,7 +17,9 @@ import types
 import queue
 import socket
 import struct
-import urllib2
+from future.standard_library import install_aliases
+install_aliases()
+from urllib.request import Request
 import traceback
 try:
     import msgpack
@@ -876,7 +878,7 @@ class CobraConnectionHandler:
 
 def isCobraUri(uri):
     try:
-        x = urllib2.Request(uri)
+        x = Request(uri)
         if x.get_type() not in ["cobra","cobrassl"]:
             return False
     except Exception as  e:
@@ -885,7 +887,7 @@ def isCobraUri(uri):
 
 def chopCobraUri(uri):
 
-    req = urllib2.Request(uri)
+    req = Request(uri)
     scheme = req.get_type()
     host = req.get_host()
 
