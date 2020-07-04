@@ -1,14 +1,17 @@
 """
 Unified config object for all vtoys.
 """
-
 import os
 import sys
 import json
 import getpass
 
-from ConfigParser import ConfigParser
-from cStringIO import StringIO
+from configparser import ConfigParser
+try:
+    from StringIO import StringIO
+except ImportError:
+    # Believe we can get away with just using this.
+    from io import StringIO
 
 def gethomedir(*paths):
     homepath = os.path.expanduser('~')
@@ -17,7 +20,7 @@ def gethomedir(*paths):
     if path != None and not os.path.exists(path):
         try:
             os.makedirs(path)
-        except Exception, err:
+        except Exception as  err:
             print('FIXME - invalid homedir, playing along...')
             pass
 
@@ -27,12 +30,11 @@ def getusername():
     return getpass.getuser()
 
 compattypes = {
-    int:(int,long),
-    str:(str,unicode),
+    int:(int,int),
+    str:(bytes,str),
     bool:(bool,),
-    long:(int,long),
-    unicode:(str,unicode),
-    type(None):(int,str,bool,long,unicode),
+    int:(int,int),
+    type(None):(int,bytes,bool,int,str),
 }
 
 CONFIG_PATH = 0
@@ -61,12 +63,12 @@ class ConfigInvalidOption(Exception):
 
 class EnviConfig:
     '''
-    EnviConfig basically works like a multi-layer dictionary that 
+    EnviConfig basically works like a multi-layer dictionary that
     loads and stores config data.
 
     Set a config parameter:     cfg['foo'] = 'bar'
     Get a config parameter:     cfg['foo']
-      or access parm using:     cfg.foo  
+      or access parm using:     cfg.foo
     Multilevel:                 cfg.baz.bilbo.foo
 
     Create/get a subconfig:     cfg.getSubConfig('baz', add=True)
@@ -108,7 +110,7 @@ class EnviConfig:
         '''
         Return a list of tuples including: (type, valid path strings, existing value)
 
-        'type' can be CONFIG_PATH or CONFIG_ENTRY to indicate whether the tuple 
+        'type' can be CONFIG_PATH or CONFIG_ENTRY to indicate whether the tuple
         represents a subconfig or an actual key/value pair
         '''
         paths = []
@@ -309,10 +311,10 @@ if __name__ == '__main__':
     }
     cfg = EnviConfig(defaults=defaults)
 
-    print cfg.woot + 20
-    print cfg.foosub.bar
+    print(cfg.woot + 20)
+    print(cfg.foosub.bar)
     for thing in cfg.foosub.baz:
-        print thing
+        print(thing)
 
     cfg.saveConfigFile('cfg.test')
 
