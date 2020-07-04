@@ -39,7 +39,7 @@ except ImportError:
     import pickle
 
 from threading import currentThread,Thread,RLock,Timer,Lock,Event
-from SocketServer import ThreadingTCPServer, BaseRequestHandler
+from socketserver import ThreadingTCPServer, BaseRequestHandler
 
 daemon = None
 verbose = False
