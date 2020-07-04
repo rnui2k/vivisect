@@ -14,7 +14,11 @@ import json
 import time
 import errno
 import types
-import queue
+try:
+    import queue
+except ImportError:
+    import Queue as queue
+
 import socket
 import struct
 try:
@@ -39,7 +43,10 @@ except ImportError:
     import pickle
 
 from threading import currentThread,Thread,RLock,Timer,Lock,Event
-from socketserver import ThreadingTCPServer, BaseRequestHandler
+try:
+    from socketserver import ThreadingTCPServer, BaseRequestHandler
+except ImportError:
+    from SocketServer import ThreadingTCPServer, BaseRequestHandler
 
 daemon = None
 verbose = False
