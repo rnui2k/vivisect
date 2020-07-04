@@ -10,7 +10,7 @@ import inspect
 import vstruct
 import vstruct.primitives as vs_prim
 
-prim_types = [ None, 
+prim_types = [ None,
                vs_prim.v_uint8,
                vs_prim.v_uint16,
                None,
@@ -56,7 +56,7 @@ class VStructBuilder:
         if vsdef != None:
             return VStructConstructor(self, name)
 
-        raise AttributeError, name
+        raise AttributeError( name )
 
     def getVStructCtorNames(self):
         return self._vs_ctors.keys()
@@ -168,7 +168,7 @@ class VStructBuilder:
 
         vs = vstruct.VStruct()
         vs._vs_name = vsname
-    
+
 
         for fname, foffset, fsize, ftypename, fflags, fcount in vskids:
 
