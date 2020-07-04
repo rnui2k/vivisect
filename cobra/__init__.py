@@ -33,8 +33,10 @@ try:
 
 except ImportError:
     msgpack = None
-
-import cPickle as pickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 
 from threading import currentThread,Thread,RLock,Timer,Lock,Event
 from SocketServer import ThreadingTCPServer, BaseRequestHandler
