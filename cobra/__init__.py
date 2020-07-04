@@ -17,9 +17,11 @@ import types
 import queue
 import socket
 import struct
-from future.standard_library import install_aliases
-install_aliases()
-from urllib.request import Request
+try:
+    from urllib2 import Request
+except ImportError:
+    from urllib.request import Request
+
 import traceback
 try:
     import msgpack
