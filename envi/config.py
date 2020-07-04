@@ -5,8 +5,11 @@ import os
 import sys
 import json
 import getpass
+try:
+    from configparser import ConfigParser
+except ImportError:
+    from ConfigParser import ConfigParser
 
-from configparser import ConfigParser
 try:
     from StringIO import StringIO
 except ImportError:
