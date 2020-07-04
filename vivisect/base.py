@@ -1,4 +1,8 @@
-import Queue
+try:
+    import Queue
+except ImportError:
+    import queue as Queue
+
 import logging
 import traceback
 import threading
