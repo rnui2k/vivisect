@@ -1787,7 +1787,7 @@ class Grammar(object):
                     # Precompute the list of productions immediately following
                     try:
                         lri.lr_after = self.Prodnames[lri.prod[i+1]]
-                    except (IndexError as KeyError):
+                    except IndexError as KeyError:
                         lri.lr_after = []
                     try:
                         lri.lr_before = lri.prod[i-1]
@@ -2809,7 +2809,7 @@ class ParserReflect(object):
             for f in self.pfuncs:
                 if f[3]:
                     sig.update(f[3].encode('latin-1'))
-        except (TypeError as ValueError):
+        except TypeError as ValueError:
             pass
         return sig.digest()
 
