@@ -2,8 +2,8 @@
 # The opcode tables were taken from Mammon_'s Guide to Writing Disassemblers in Perl, You Morons!"
 # and the bastard project. http://www.eccentrix.com/members/mammon/
 
-INSTR_PREFIX = 0xF0000000L
-ADDRMETH_MASK = 0x00FF0000L
+INSTR_PREFIX = 0xF0000000
+ADDRMETH_MASK = 0x00FF0000
 ADDRMETH_A = 0x00010000    # Direct address with segment prefix
 ADDRMETH_B = 0x00020000    # VEX.vvvv field selects general purpose register
 ADDRMETH_C = 0x00030000    # MODRM reg field defines control register
@@ -32,7 +32,7 @@ ADDRMETH_LAST = ADDRMETH_VEXH
 
 ADDRMETH_VEXSKIP = 0x00800000  # This operand should be skipped if we're not in VEX mode
 
-OPTYPE_a = 0x01000000     # 2/4   two one-word operands in memory or two double-word operands in memory (operand-size attribute)   
+OPTYPE_a = 0x01000000     # 2/4   two one-word operands in memory or two double-word operands in memory (operand-size attribute)
 OPTYPE_b = 0x02000000     # 1     always 1 byte
 OPTYPE_c = 0x03000000     # 1/2   byte or word, depending on operand
 OPTYPE_d = 0x04000000     # 4     double-word
@@ -210,7 +210,7 @@ OP_R = 0x001
 OP_W = 0x002
 OP_X = 0x004
 OP_64AUTO = 0x008  # operand is in 64bit mode with amd64!
-# So these this exists is because in the opcode mappings intel puts out, they very 
+# So these this exists is because in the opcode mappings intel puts out, they very
 # *specifically* call out things like pmovsx* using U/M for their operand mappings,
 # but *not* W. The reason for this being there
 # is a size difference between the U and M portions, whereas W uses a uniform size for both
@@ -256,7 +256,7 @@ cpu_AESNI = 0x0000b000
 cpu_AVX   = 0x0000c000
 
 #eventually, change this for your own codes
-#ADDEXP_SCALE_OFFSET= 0 
+#ADDEXP_SCALE_OFFSET= 0
 #ADDEXP_INDEX_OFFSET= 8
 #ADDEXP_BASE_OFFSET = 16
 #ADDEXP_DISP_OFFSET = 24
