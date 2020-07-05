@@ -3,7 +3,10 @@ All the code related to vtrace process snapshots and TraceSnapshot classes.
 '''
 import sys
 import copy
-import cPickle as pickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
 
 import envi
 import envi.memory as e_mem
