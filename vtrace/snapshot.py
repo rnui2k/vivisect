@@ -58,7 +58,7 @@ class TraceSnapshot(vtrace.Trace, v_base.TracerBase):
 
         # Lets get some symbol resolvers created for our libraries
         #for fname in self.getNormalizedLibNames():
-            #subres = e_resolv.FileSymbol(fname, 
+            #subres = e_resolv.FileSymbol(fname,
 
         self.running = False
         self.attached = True
@@ -144,7 +144,7 @@ class TraceSnapshot(vtrace.Trace, v_base.TracerBase):
         pass
 
     def platformParseBinary(self, *args):
-        print 'FIXME FAKE PLATFORM PARSE BINARY: %s' % repr(args)
+        print('FIXME FAKE PLATFORM PARSE BINARY: %s' % repr(args))
 
     # Over-ride register *caching* subsystem to store/retrieve
     # register information in pure dictionaries
@@ -182,7 +182,7 @@ def takeSnapshot(trace):
         try:
             stacktrace[thrid] = trace.getStackTrace()
         except Exception as  msg:
-            print >> sys.stderr, "WARNING: Failed to get stack trace for thread 0x%.8x" % thrid
+            print("WARNING: Failed to get stack trace for thread 0x%.8x" % thrid, file=sys.stderr)
 
     mem = dict()
     maps = []
@@ -191,7 +191,7 @@ def takeSnapshot(trace):
             mem[base] = trace.readMemory(base, size)
             maps.append((base,size,perms,fname))
         except Exception as  msg:
-            print >> sys.stderr, "WARNING: Can't snapshot memmap at 0x%.8x (%s)" % (base,msg)
+            print("WARNING: Can't snapshot memmap at 0x%.8x (%s)" % (base,msg), file=sys.stderr)
 
     # If the contents here change, change the version...
     sd['version'] = 1
