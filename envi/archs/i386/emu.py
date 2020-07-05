@@ -1175,12 +1175,12 @@ class IntelEmulator(i386RegisterContext, envi.Emulator):
         src = self.getOperValue(op, off+1)
 
         if op.opers[off].isReg() and op.opers[off+1].isReg():
-            mask = 0x000000000000000000000000FFFFFFFFL
+            mask = 0x000000000000000000000000FFFFFFFF
             dst &= ~mask
             dst |= src & mask
         else:
             # so technically we're supposed to zero out the upper ymm bits
-            mask = 0xFFFFFFFFFFFFFFFFFFFFFFFF00000000L
+            mask = 0xFFFFFFFFFFFFFFFFFFFFFFFF00000000
             dst &= ~mask
             dst | src & 0xFFFFFFFF
 
