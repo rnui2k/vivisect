@@ -15,7 +15,7 @@ from envi.archs.i386.opconst import OP_EXTRA_MEMSIZES, OP_MEM_B, OP_MEM_W, OP_ME
                                     OP_MEM_Q, OP_MEM_DQ, OP_MEM_QQ, OP_MEMMASK, \
                                     INS_VEXREQ, OP_NOVEXL
 
-import opcode86
+from . import opcode86
 all_tables = opcode86.tables86
 
 # Our instruction prefix masks
