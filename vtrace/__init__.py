@@ -41,7 +41,10 @@ import inspect
 import platform
 import traceback
 
-import cPickle as pickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle as pickle
 
 import envi
 import envi.bits as e_bits
