@@ -41,7 +41,6 @@ macho_magics = (
 )
 
 def guessFormat(bytesz):
-    print(bytesz, bytesz.__class__)
     if bytesz.startswith(b'VIV'):
         return 'viv'
 
