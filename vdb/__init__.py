@@ -6,10 +6,17 @@ import pprint
 import signal
 import threading
 import traceback
-from Queue import Queue
+try:
+    from Queue import Queue
+except ImportError:
+    from queue import Queue
+
 from collections import defaultdict
 
-from ConfigParser import *
+try:
+    from ConfigParser import *
+except ImportError:
+    from configparser import *
 
 from cmd import *
 from struct import *
@@ -1034,10 +1041,10 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
             elif opt == '-Q':
                 quiet = True
 
-        if ( count == None 
+        if ( count == None
              and taddr == None
              and until == None
-             and toret == False 
+             and toret == False
              and tobrn == False):
             count = 1
 
@@ -1088,7 +1095,7 @@ class Vdb(e_cli.EnviMutableCli, v_notif.Notifier, v_util.TraceManager):
                     elif op.iflags & envi.IF_RET:
                         depth -= 1
                 except Exception as  e:
-                    print "[E@0x%x] %r" % (pc, e)
+                    print("[E@0x%x] %r" % (pc, e))
 
 
                 tid = t.getCurrentThread()
