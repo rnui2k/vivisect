@@ -1,4 +1,8 @@
-import cPickle as pickle
+try:
+    import cPickle as pickle
+except ImportError:
+    import pickle
+
 import vivisect
 
 vivsig_cpickle = 'VIV'.ljust(8,'\x00')
