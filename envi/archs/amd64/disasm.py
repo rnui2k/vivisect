@@ -4,7 +4,7 @@ import envi
 import envi.bits as e_bits
 import envi.archs.i386 as e_i386
 import envi.archs.i386.opconst as e_i386_const
-import opcode64 as opcode86
+from . import opcode64 as opcode86
 
 from envi.const import RMETA_NMASK
 
