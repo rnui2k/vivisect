@@ -28,7 +28,7 @@ REV_ARMv8M  =   0b0000010000000000000000 #    65536        0x10000
 REV_ALL_ARMv4  = (REV_ARMv4 | REV_ARMv4T)
 REV_ALL_ARMv5  = (REV_ARMv5 | REV_ARMv5T | REV_ARMv5E | REV_ARMv5J | REV_ARMv5TE)
 REV_ALL_ARMv6  = (REV_ARMv6 | REV_ARMv6T2 | REV_ARMv6M)
-REV_ALL_ARMv7  = (REV_ARMv7A | REV_ARMv7R | REV_ARMv7M | REV_ARMv7EM) 
+REV_ALL_ARMv7  = (REV_ARMv7A | REV_ARMv7R | REV_ARMv7M | REV_ARMv7EM)
 REV_ALL_ARMv8  = (REV_ARMv8A | REV_ARMv8R | REV_ARMv8M)
 
 #Todo - For easy instruction filtering add more like:
@@ -41,15 +41,16 @@ REV_ALL_FROM_ARMv6 = REV_ALL_ARMv6 | REV_ALL_ARMv7 | REV_ALL_ARMv8
 REV_ALL_ARM = (REV_ALL_ARMv4 | REV_ALL_ARMv5 | REV_ALL_ARMv6 | REV_ALL_ARMv7 | REV_ALL_ARMv8)
 
 #Will be set below, THUMB16 up through v6 except v6T2, THUMB2 from v6T2 up, THUMBEE from v7 up.
-REV_THUMB16 = REV_THUMB2  = REV_THUMBEE = 0   
+REV_THUMB16 = REV_THUMB2  = REV_THUMBEE = 0
 
 ARCH_REVS = {}
-#Itterate through all REV_ARM values and setup related combo values 
-for name, val in globals().items():
+#Itterate through all REV_ARM values and setup related combo values
+for name in list(globals()):
     if (not name.startswith('REV_ARM')):
         continue
     shortName = name[4:]
     #add to lookup dictionary
+    val = globals()[name]
     ARCH_REVS[shortName] = val
     #setup thumb versions to Architecture versions
     if (int(shortName[4]) > 6 or shortName == 'ARMv6T2'):
@@ -153,7 +154,7 @@ for ifx in range(1, len(IFS)):
     globals()[gblname] = ifx
 
 
-OF_W         = 1<<8     # Write back to 
+OF_W         = 1<<8     # Write back to
 OF_UM        = 1<<9     # Usermode, or if r15 included set current SPSR -> CPSR
 
 
@@ -184,38 +185,38 @@ COND_AL     = 0xE        # always
 COND_EXTENDED = 0xF        # special case - see conditional 0b1111
 
 cond_codes = {
-    COND_EQ:"eq", # Equal Z set 
-    COND_NE:"ne", # Not equal Z clear 
-    COND_CS:"cs", #/HS Carry set/unsigned higher or same C set 
-    COND_CC:"cc", #/LO Carry clear/unsigned lower C clear 
-    COND_MI:"mi", # Minus/negative N set 
-    COND_PL:"pl", # Plus/positive or zero N clear 
-    COND_VS:"vs", # Overflow V set 
-    COND_VC:"vc", # No overflow V clear 
-    COND_HI:"hi", # Unsigned higher C set and Z clear 
-    COND_LS:"ls", # Unsigned lower or same C clear or Z set 
-    COND_GE:"ge", # Signed greater than or equal N set and V set, or N clear and V clear (N == V) 
-    COND_LT:"lt", # Signed less than N set and V clear, or N clear and V set (N!= V) 
-    COND_GT:"gt", # Signed greater than Z clear, and either N set and V set, or N clear and V clear (Z == 0,N == V) 
-    COND_LE:"le", # Signed less than or equal Z set, or N set and V clear, or N clear and V set (Z == 1 or N!= V) 
+    COND_EQ:"eq", # Equal Z set
+    COND_NE:"ne", # Not equal Z clear
+    COND_CS:"cs", #/HS Carry set/unsigned higher or same C set
+    COND_CC:"cc", #/LO Carry clear/unsigned lower C clear
+    COND_MI:"mi", # Minus/negative N set
+    COND_PL:"pl", # Plus/positive or zero N clear
+    COND_VS:"vs", # Overflow V set
+    COND_VC:"vc", # No overflow V clear
+    COND_HI:"hi", # Unsigned higher C set and Z clear
+    COND_LS:"ls", # Unsigned lower or same C clear or Z set
+    COND_GE:"ge", # Signed greater than or equal N set and V set, or N clear and V clear (N == V)
+    COND_LT:"lt", # Signed less than N set and V clear, or N clear and V set (N!= V)
+    COND_GT:"gt", # Signed greater than Z clear, and either N set and V set, or N clear and V clear (Z == 0,N == V)
+    COND_LE:"le", # Signed less than or equal Z set, or N set and V clear, or N clear and V set (Z == 1 or N!= V)
     COND_AL:"", # Always (unconditional) - could be "al" but "" seems better...
     COND_EXTENDED:"", # See extended opcode table
 }
 cond_map = {
-    COND_EQ:0,      # Equal Z set 
-    COND_NE:1, # Not equal Z clear 
-    COND_CS:2, #/HS Carry set/unsigned higher or same C set 
-    COND_CC:3, #/LO Carry clear/unsigned lower C clear 
-    COND_MI:4, # Minus/negative N set 
-    COND_PL:5, # Plus/positive or zero N clear 
-    COND_VS:6, # Overflow V set 
-    COND_VC:7, # No overflow V clear 
-    COND_HI:8, # Unsigned higher C set and Z clear 
-    COND_LS:9, # Unsigned lower or same C clear or Z set 
-    COND_GE:10, # Signed greater than or equal N set and V set, or N clear and V clear (N == V) 
-    COND_LT:11, # Signed less than N set and V clear, or N clear and V set (N!= V) 
-    COND_GT:12, # Signed greater than Z clear, and either N set and V set, or N clear and V clear (Z == 0,N == V) 
-    COND_LE:13, # Signed less than or equal Z set, or N set and V clear, or N clear and V set (Z == 1 or N!= V) 
+    COND_EQ:0,      # Equal Z set
+    COND_NE:1, # Not equal Z clear
+    COND_CS:2, #/HS Carry set/unsigned higher or same C set
+    COND_CC:3, #/LO Carry clear/unsigned lower C clear
+    COND_MI:4, # Minus/negative N set
+    COND_PL:5, # Plus/positive or zero N clear
+    COND_VS:6, # Overflow V set
+    COND_VC:7, # No overflow V clear
+    COND_HI:8, # Unsigned higher C set and Z clear
+    COND_LS:9, # Unsigned lower or same C clear or Z set
+    COND_GE:10, # Signed greater than or equal N set and V set, or N clear and V clear (N == V)
+    COND_LT:11, # Signed less than N set and V clear, or N clear and V set (N!= V)
+    COND_GT:12, # Signed greater than Z clear, and either N set and V set, or N clear and V clear (Z == 0,N == V)
+    COND_LE:13, # Signed less than or equal Z set, or N set and V clear, or N clear and V set (Z == 1 or N!= V)
     COND_AL:"", # Always (unconditional) - could be "al" but "" seems better...
     COND_EXTENDED:"2", # See extended opcode table
 }
@@ -243,7 +244,7 @@ PM_sys = 0b11111
 REGS_PER_MODE = 18
 
 # reg stuff stolen from regs.py to support proc_modes
-# these are in context of reg_table, not reg_data.  
+# these are in context of reg_table, not reg_data.
 #  ie. these are indexes into the lookup table.
 REG_OFFSET_USR = REGS_PER_MODE * (PM_usr&0xf)
 REG_OFFSET_FIQ = REGS_PER_MODE * (PM_fiq&0xf)
@@ -332,11 +333,11 @@ iencs = (\
     'IENC_EXTRA_LOAD',      #   extra load/store (swp)
     'IENC_DP_MOVW',         #   move wide
     'IENC_DP_MOVT',         #   move top
-    'IENC_DP_MSR_IMM',      #    
+    'IENC_DP_MSR_IMM',      #
     'IENC_LOAD_STORE_WORD_UBYTE',   #
     'IENC_FP_DP',           #
-    'IENC_ADVSIMD',         #   
-    'IENC_64_EXT_XFERS',    #   
+    'IENC_ADVSIMD',         #
+    'IENC_64_EXT_XFERS',    #
     'IENC_VSTM',            #
     'IENC_VSTR',            #
     'IENC_VPUSH',           #
@@ -480,45 +481,45 @@ instrnames = [
         'VCVT',
         'MUL',
         'SMUL',
-        'MUL',  
-        'MLA',  
+        'MUL',
+        'MLA',
         'UMAAL',
         'UMULL',
         'UMLAL',
         'SMULL',
         'SMLAL',
-        'SMLABB', 
-        'SMLATB', 
-        'SMLABT', 
-        'SMLATT', 
-        'SMULWB', 
-        'SMULWT', 
-        'SMLAWB', 
-        'SMLAWT', 
+        'SMLABB',
+        'SMLATB',
+        'SMLABT',
+        'SMLATT',
+        'SMULWB',
+        'SMULWT',
+        'SMLAWB',
+        'SMLAWT',
         'SMLALBB',
         'SMLALTB',
         'SMLALBT',
         'SMLALTT',
-        'SMULBB', 
-        'SMULTB', 
-        'SMULBT', 
-        'SMULTT', 
-        'SMUAD', 
-        'SMUADX', 
-        'SMUSD', 
-        'SMUSDX', 
-        'SMLAD', 
-        'SMLADX', 
-        'SMLSD', 
-        'SMLSDX', 
-        'SMLALD', 
+        'SMULBB',
+        'SMULTB',
+        'SMULBT',
+        'SMULTT',
+        'SMUAD',
+        'SMUADX',
+        'SMUSD',
+        'SMUSDX',
+        'SMLAD',
+        'SMLADX',
+        'SMLSD',
+        'SMLSDX',
+        'SMLALD',
         'SMLALDX',
-        'SMLSLD', 
+        'SMLSLD',
         'SMLSLDX',
-        'SMMLA', 
-        'SMMLAR', 
-        'SMMLS', 
-        'SMMLSR', 
+        'SMMLA',
+        'SMMLAR',
+        'SMMLS',
+        'SMMLSR',
         'UADD16',
         'UADD8',
         'USUB16',
