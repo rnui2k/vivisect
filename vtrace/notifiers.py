@@ -81,7 +81,7 @@ class VerboseNotifier(Notifier):
         elif event == vtrace.NOTIFY_STEP:
             print("vtrace.NOTIFY_STEP")
         else:
-            print "vtrace.NOTIFY_WTF_HUH?"
+            print("vtrace.NOTIFY_WTF_HUH?")
 
 class DistributedNotifier(Notifier):
     """
@@ -113,14 +113,14 @@ class DistributedNotifier(Notifier):
             try:
                 notifier.handleEvent(event, trace)
             except:
-                print "ERROR - Exception in notifier:",traceback.format_exc()
+                print("ERROR - Exception in notifier:",traceback.format_exc())
 
         nlist = self.notifiers.get(event, [])
         for notifier in nlist:
             try:
                 notifier.handleEvent(event, trace)
             except:
-                print "ERROR - Exception in notifier:",traceback.format_exc()
+                print("ERROR - Exception in notifier:",traceback.format_exc())
 
     def registerNotifier(self, event, notif):
         """
