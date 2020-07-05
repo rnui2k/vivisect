@@ -8,7 +8,11 @@ import vtrace
 import traceback
 import platform
 
-from Queue import Queue
+try:
+    from Queue import Queue
+except ImportError:
+    from queue import Queue
+
 from threading import Thread, currentThread, Lock
 
 import envi
@@ -387,7 +391,7 @@ class TracerBase(vtrace.Notifier):
             bp.notify(vtrace.NOTIFY_BREAK, self)
         except Exception as  msg:
             traceback.print_exc()
-            print "Breakpoint Exception 0x%.8x : %s" % (bp.address,msg)
+            print("Breakpoint Exception 0x%.8x : %s" % (bp.address,msg))
 
         # "stealthbreak" bp's do not NOTIFY *or* run again
         if bp.stealthbreak:
@@ -476,7 +480,7 @@ class TracerBase(vtrace.Notifier):
             self.runAgain()
 
         # For thread exits, make sure the tid
-        # isn't in 
+        # isn't in
         if event == vtrace.NOTIFY_EXIT_THREAD:
             tid = self.getMeta("ThreadId")
             self.sus_threads.pop(tid, None)
@@ -715,7 +719,7 @@ class TracerBase(vtrace.Notifier):
 
     def archCheckWatchpoints(self):
         """
-        If the current register state indicates that a watchpoint was hit, 
+        If the current register state indicates that a watchpoint was hit,
         return the address of the watchpoint and clear the event.  Otherwise
         return None
         """
@@ -800,13 +804,13 @@ class TracerBase(vtrace.Notifier):
 
     def platformProtectMemory(self, va, size, perms):
         raise Exception("Plaform does not implement protect memory")
-        
+
     def platformAllocateMemory(self, size, perms=e_mem.MM_RWX, suggestaddr=0):
         raise Exception("Plaform does not implement allocate memory")
-        
+
     def platformReadMemory(self, address, size):
         raise Exception("Platform must implement platformReadMemory!")
-        
+
     def platformWriteMemory(self, address, bytes):
         raise Exception("Platform must implement platformWriteMemory!")
 
