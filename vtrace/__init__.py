@@ -1502,10 +1502,10 @@ def getTrace(target=None, **kwargs):
             #print '(put your username in there unless you want to put me in too... ;)'
             #raise Exception('procmod group membership required')
         if os.getuid() != 0:
-            print 'For NOW you *must* be root.  There are some crazy MACH perms...'
+            print('For NOW you *must* be root.  There are some crazy MACH perms...')
             raise Exception('You must be root for now (on OSX)....')
 
-        print 'Also... the darwin port is not even REMOTELY working yet.  Solid progress though...'
+        print('Also... the darwin port is not even REMOTELY working yet.  Solid progress though...')
 
         #'sudo dscl . append /Groups/procmod GroupMembership invisigoth'
         #'sudo dscl . read /Groups/procmod GroupMembership'
