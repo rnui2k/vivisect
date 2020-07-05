@@ -11,7 +11,7 @@ for vivisect.  Each parser module must implement the following functions:
 """
 # Some parser utilities
 
-import md5
+import hashlib as md5
 import sys
 import struct
 
