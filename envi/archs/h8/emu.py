@@ -11,7 +11,7 @@ import envi.const as e_const
 import envi.archs.h8.regs as h8_regs
 import envi.archs.h8.const as h8_const
 from envi.archs.h8 import H8Module
-from operands import H8RegDirOper
+from .operands import H8RegDirOper
 
 
 logger = logging.getLogger(__name__)
