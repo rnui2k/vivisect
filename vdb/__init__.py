@@ -21,7 +21,10 @@ except ImportError:
 from cmd import *
 from struct import *
 from getopt import getopt
-from UserDict import *
+try:
+    from UserDict import *
+except ImportError:
+    from collections import UserDict
 
 import vtrace
 import vtrace.util as v_util
