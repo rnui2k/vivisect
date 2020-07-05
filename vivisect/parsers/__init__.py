@@ -19,7 +19,7 @@ import vstruct.defs.macho as vs_macho
 
 def md5File(filename):
     d = md5.md5()
-    f = file(filename,"rb")
+    f = open(filename,"rb")
     bytes = f.read(4096)
     while len(bytes):
         d.update(bytes)
@@ -63,7 +63,7 @@ def guessFormat(bytes):
     return 'blob'
 
 def guessFormatFilename(filename):
-    bytez = file(filename, "rb").read(32)
+    bytez = open(filename, "rb").read(32)
     return guessFormat(bytez)
 
 def getParserModule(fmt):
