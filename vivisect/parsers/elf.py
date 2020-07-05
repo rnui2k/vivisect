@@ -9,14 +9,16 @@ import vivisect.parsers as v_parsers
 import envi.bits as e_bits
 
 from vivisect.const import *
-
-from cStringIO import StringIO
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 logger = logging.getLogger(__name__)
 
 
 def parseFile(vw, filename, baseaddr=None):
-    fd = file(filename, 'rb')
+    fd = open(filename, 'rb')
     elf = Elf.Elf(fd)
     return loadElfIntoWorkspace(vw, elf, filename=filename, baseaddr=baseaddr)
 
@@ -99,7 +101,7 @@ def makeFunctionTable(elf, vw, tbladdr, size, tblname, funcs, ptrs, baseaddr=0, 
         addr, = struct.unpack_from(pfmt, secbytes, off)
         if addbase:
             addr += baseaddr
-        
+
         nstub = tblname + "_%d"
         pname = nstub % ptr_count
 
@@ -236,14 +238,14 @@ def loadElfIntoWorkspace(vw, elf, filename=None, baseaddr=None):
 
     # since getFileByVa is based on segments, and ELF Sections seldom cover all the
     # loadable memory space.... we'll add PT_LOAD Program Headers, only at the
-    # end.  If we add them first, they're always the matching segments.  At the 
+    # end.  If we add them first, they're always the matching segments.  At the
     # end, they make more of a default segment
     pcount = 0
     if vw.getFileByVa(baseaddr) is None:
         for phdr in elf.getPheaders():
             if phdr.p_type != Elf.PT_LOAD:
                 continue
-            
+
             sva = phdr.p_vaddr
             if addbase:
                 sva += baseaddr
@@ -380,8 +382,8 @@ def loadElfIntoWorkspace(vw, elf, filename=None, baseaddr=None):
     vw.setFileMeta(fname, 'ELF_DYNAMICS', elfmeta)  # create a VaSet instead? setMeta allows more free-form info, but isn't currently accessible from the gui
     vw.setFileMeta(fname, 'addbase', addbase)
 
-    # applyRelocs is specifically prior to "process Dynamic Symbols" because Dynamics-only symbols 
-    #       (ie. not using Section Headers) may not get all the symbols.  Some ELF's simply list too 
+    # applyRelocs is specifically prior to "process Dynamic Symbols" because Dynamics-only symbols
+    #       (ie. not using Section Headers) may not get all the symbols.  Some ELF's simply list too
     #       small a space using SYMTAB and SYMTABSZ
     applyRelocs(elf, vw, addbase, baseaddr)
 
@@ -464,7 +466,7 @@ def loadElfIntoWorkspace(vw, elf, filename=None, baseaddr=None):
         if s.st_info == Elf.STT_FILE:
             vw.setVaSetRow('FileSymbols', (dmglname, sva))
             continue
-            
+
         if s.st_info == Elf.STT_NOTYPE:
             # mapping symbol
             if arch in ('arm', 'thumb', 'thumb16'):
@@ -562,7 +564,7 @@ def applyRelocs(elf, vw, addbase=False, baseaddr=0):
         if addbase:
             rlva += baseaddr
         try:
-            # If it has a name, it's an externally resolved "import" entry, 
+            # If it has a name, it's an externally resolved "import" entry,
             # otherwise, just a regular reloc
             name = r.getName()
             dmglname = demangle(name)
@@ -586,7 +588,7 @@ def applyRelocs(elf, vw, addbase=False, baseaddr=0):
                     else:
                         logger.warn('unknown reloc type: %d %s (at %s)', rtype, name, hex(rlva))
                         logger.info(r.tree())
-                       
+
                 else:
                     if rtype == Elf.R_386_RELATIVE: # R_X86_64_RELATIVE is the same number
                         ptr = vw.readMemoryPtr(rlva)
@@ -614,7 +616,7 @@ def applyRelocs(elf, vw, addbase=False, baseaddr=0):
 
 
             if arch in ('arm', 'thumb', 'thumb16'):
-                # ARM REL entries require an addend that could be stored as a 
+                # ARM REL entries require an addend that could be stored as a
                 # number or an instruction!
                 import envi.archs.arm.const as eaac
                 if r.vsHasField('addend'):
@@ -622,7 +624,7 @@ def applyRelocs(elf, vw, addbase=False, baseaddr=0):
                     addend = r.addend
                 else:
                     # otherwise, we have to check the stored value for number or instruction
-                    # if it's an instruction, we have to use the immediate value and then 
+                    # if it's an instruction, we have to use the immediate value and then
                     # figure out if it's negative based on the instruction!
                     try:
                         temp = vw.readMemoryPtr(rlva)
@@ -683,7 +685,7 @@ def applyRelocs(elf, vw, addbase=False, baseaddr=0):
                         logger.info('R_ARM_JUMP_SLOT: adding Import 0x%x (%s) ', rlva, dmglname)
                         vw.makeImport(rlva, "*", dmglname)
                         vw.setComment(rlva, name)
-                    
+
                 elif rtype == Elf.R_ARM_GLOB_DAT:
                     symidx = r.getSymTabIndex()
                     sym = elf.getDynSymbol(symidx)
