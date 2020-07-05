@@ -29,9 +29,9 @@ REG_CCR_V = 1
 REG_CCR_C = 0
 
 ccr_fields = [None for x in range(8)]
-for k,v in locals().items():
+for k in list(locals()):
     if k.startswith('REG_CCR_'):
-        ccr_fields[v] = k
+        ccr_fields[ locals()[k] ] = k
 
 H8StatMeta = tuple([
     ("N", h8_const.REG_FLAGS, REG_CCR_N, 1, 'Negative'),
