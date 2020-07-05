@@ -204,7 +204,7 @@ class ElfSection:
                 self.sh_entsize,
                 self.sh_size,
                 self.sh_addralign)
-    
+
 class Elf32Section(ElfSection, vs_elf.Elf32Section):
     def __init__(self, bigend=False):
         vs_elf.Elf32Section.__init__(self, bigend=bigend)
@@ -220,7 +220,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         '''
         Parse data from 'fd' and create an Elf object.
 
-        This process attempts to get as much information from DYNAMICS as 
+        This process attempts to get as much information from DYNAMICS as
         possible, then adds in data from SECTIONS.
         '''
 
@@ -359,7 +359,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
             strsec = self.sections[self.e_shstrndx]
             names = self.readAtOffset(strsec.sh_offset, strsec.sh_size)
             for sec in self.sections:
-                name = names[sec.sh_name:].split("\x00")[0]
+                name = names[sec.sh_name:].split(b"\x00")[0]
                 if len(name) > 0:
                     sec.setName(name)
                     self.secnames[name] = sec
@@ -396,7 +396,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         ssymtabva = self.getSection('.dynsym').sh_addr
         dsymtabva = self.dyns.get(DT_SYMTAB)
         if ssymtabva != dsymtabva:
-            logger.warn("Section headers and Dynamics disagree on Symbol Table:  sec: 0x%x, dyn: 0x%x", 
+            logger.warn("Section headers and Dynamics disagree on Symbol Table:  sec: 0x%x, dyn: 0x%x",
                     ssymtabva, dsymtabva)
 
         # only parse the symbols that are not already accounted for.
@@ -453,7 +453,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
     def _parseDynLinkInfo(self):
         '''
         Parse the Dynamics segment and populate both self.dynamics (legacy) and self.dyns
-        This must be run before most Dynamic-data accessors like getDynStrTabString(), 
+        This must be run before most Dynamic-data accessors like getDynStrTabString(),
         getDynSymTabInfo(), etc..
         '''
         self.dyns = {}
@@ -479,7 +479,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
                 self.dyns[dyn.d_tag] = dyn.d_value
             logger.debug("dynamic: %r: 0x%x", dt_names.get(dyn.d_tag), dyn.d_value)
 
-            # DEPRECATED: storing info in both dyns{} and dynamics[].  
+            # DEPRECATED: storing info in both dyns{} and dynamics[].
             # 2019-10-21:  dynamics will go away sometime in the future
             self.dynamics.append(dyn)
             if dyn.d_tag == DT_NULL: # Represents the end
@@ -488,7 +488,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
 
     def _parseDynStrs(self):
         # setup STRTAB for string recovery:
-        dynstrtab = self.dyns.get(DT_STRTAB) 
+        dynstrtab = self.dyns.get(DT_STRTAB)
         strsz = self.dyns.get(DT_STRSZ)
         if dynstrtab is None or strsz is None:
             logger.warn('no dynamic string tableinfo found: DT_STRTAB: %r  DT_STRSZ: %r', dynstrtab, strsz)
@@ -529,12 +529,12 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
 
         This relies on the DYNAMICS section having DT_SYMTAB and DT_SYMENT
 
-        Because ELF has no DT_SYMTABSZ, "symtabsz" as returned from 
+        Because ELF has no DT_SYMTABSZ, "symtabsz" as returned from
         getDynSymTabInfo() cannot be fully trusted.  Therefore, we run a few
         sanity heuristics.
 
-        This is only a prep run to identify symbols.  If getDynSymbol() is 
-        called with an index not currently in dynamic_symbols, dynamic_symbols 
+        This is only a prep run to identify symbols.  If getDynSymbol() is
+        called with an index not currently in dynamic_symbols, dynamic_symbols
         is expanded to fill the need (albeit, without these sanity checks, so
         be cautious).
         '''
@@ -676,7 +676,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
                 if index < len(self.dynamic_symbols):
                     sym = self.dynamic_symbols[index]
                     reloc.setName( sym.getName() )
-                    
+
                 if reloc.r_offset in self.relocvas:
                     logger.debug("duplicate relocation (section): %r", reloc)
                     continue
@@ -910,8 +910,8 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         return self.e_type == ET_EXEC
 
     def __repr__(self, verbose=False):
-        """  
-        Returns a string summary of this ELF.  
+        """
+        Returns a string summary of this ELF.
         If (verbose) the summary will include Symbols, Relocs, Dynamics and Dynamic Symbol tables
         """
         mystr = 'Elf Binary:'
@@ -1017,7 +1017,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
 
     def _getDynSymbol(self, symidx):
         '''
-        Parse the Dynamics entries for SYMTAB and STRTAB, and return the 
+        Parse the Dynamics entries for SYMTAB and STRTAB, and return the
         symidx indexed symbol.
         '''
         symtabrva, symsz, symtabsz = self.getDynSymTabInfo()
@@ -1041,11 +1041,11 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         Assumes _parseDynSyms has run (populating self.dynstrtab)
         returns (symtabva, symbolsz, symtabsz)
 
-        Because there is no DT_SYMTABSZ, we can't be certain how many dynamic 
-        symbols to expect.  Supposedly there is a 1:1 relationship between 
+        Because there is no DT_SYMTABSZ, we can't be certain how many dynamic
+        symbols to expect.  Supposedly there is a 1:1 relationship between
         DynSyms and DynStrs, but that can be misleading.  Still, based on the
-        number of DynStrs parsed in _parseDynStrs() we use that to roughly 
-        determine the number, which is estimated in _parseDynStrs()  and stored 
+        number of DynStrs parsed in _parseDynStrs() we use that to roughly
+        determine the number, which is estimated in _parseDynStrs()  and stored
         in self.dynsymtabct.  Perhaps this is horrible and should be stricken
         from the code.
         '''
