@@ -205,13 +205,13 @@ def branch_misc(va, val, val2):  # bl and misc control
     op1 = (val2 >> 12) & 0b111
     op2 = (val2 >> 8) & 0b1111
     imm8 = val2 & 0b1111
-    
+
     if (op1 & 0b101 == 0):
         if not (op & 0b0111000) == 0b0111000: # T3 encoding - conditional
             cond = (val>>6) & 0xf
             opcode, mnem, nflags, cond = bcc_ops.get(cond)
             flags = envi.IF_BRANCH | nflags
-            
+
             # break down the components
             S = (val>>10)&1
             j1 = (val2>>13)&1
@@ -349,7 +349,7 @@ def branch_misc(va, val, val2):  # bl and misc control
                 if not (imod or m):
                     # hint
                     mnem = "CPS Hint"
-                    
+
                 if imod & 2:
                     opers = [
                         ArmCPSFlagsOper(aif)    # if mode is set...
@@ -486,7 +486,7 @@ def branch_misc(va, val, val2):  # bl and misc control
         oper0 = ArmPcOffsetOper(e_bits.signed(imm,4), va=va)
 
         return COND_AL, opcode, mnem, (oper0, ), flags, 0
-        
+
     raise InvalidInstruction(
         mesg="branch_misc Branches and Miscellaneous Control: Failed to match",
         bytez=struct.pack("<H", val)+struct.pack("<H", val2), va=va-4)
@@ -504,7 +504,7 @@ def pc_imm8(va, value): # b
     oper0 = ArmPcOffsetOper(imm, va=va)
     return cond,(oper0,), None
 
-def ldmia(va, value): 
+def ldmia(va, value):
     rd = shmaskval(value, 8, 0x7)
     reg_list = value & 0xff
     oper0 = ArmRegOper(rd, va=va)
@@ -533,7 +533,7 @@ def pop_reglist(va, value):
     oper0 = ArmRegListOper(reglist)
     if reglist & 0x8000:
         flags |= envi.IF_NOFALL | envi.IF_RET
-    
+
     return COND_AL,(oper0,), flags
 
 def push_reglist(va, value):
@@ -570,7 +570,7 @@ def ldm16(va, value):
 def cps16(va, value):
     im = (value>>4) & 1
     aif = value & 0x7
-    
+
     opers = (
             ArmCPSFlagsOper(aif),
             )
@@ -651,7 +651,7 @@ class ThumbITOper(ArmOperand):
                 data |= bit
                 count += 1
 
-            if mbit: 
+            if mbit:
                 go = 1
 
         return count, self.firstcond, data
@@ -727,7 +727,7 @@ dp_sec_silS = (0,4,8,13)
 # IF_PSR_S_SIL is silent s for tst, teq, cmp cmn
 DP_SEC_PSR_S = [IF_PSR_S for x in range(17)]
 for x in dp_sec_silS:
-    DP_SEC_PSR_S[x] |= IF_PSR_S_SIL 
+    DP_SEC_PSR_S[x] |= IF_PSR_S_SIL
 
 def dp_mod_imm_32(va, val1, val2):
     if val2 & 0x8000:
@@ -747,7 +747,7 @@ def dp_mod_imm_32(va, val1, val2):
     dpop = (val1>>5) & 0xf
 
     const,carry = ThumbExpandImm_C(imm4, const, 0)
-    
+
     if Rd==15 and S:
         #raise Exception("dp_mod_imm_32 - FIXME: secondary dp encoding")
         mnem = dp_secondary[dpop]
@@ -900,7 +900,7 @@ parallel_misc_info = (
             0b1110:        (INS_UQSAX,  'uqsax',                  IF_THUMB32),
             0b1101:        (INS_UQSUB16, 'uqsub16',              IF_THUMB32),
             0b1100:        (INS_UQSUB8, 'uqsub8',                IF_THUMB32),
-            
+
             0b10000:        (INS_UHADD8, 'uhadd8',                IF_THUMB32),
             0b10001:        (INS_UHADD16, 'uhadd16',              IF_THUMB32),
             0b10010:        (INS_UHASX, 'uhasx',                  IF_THUMB32),
@@ -940,7 +940,7 @@ parallel_misc_info = (
             0b01001:        (INS_REV16,   'rev16',                IF_THUMB32),
             0b10001:        (INS_RBIT,   'rbit',                IF_THUMB32),    # rd, rm
             0b11001:        (INS_REVSH,   'revsh',                IF_THUMB32),
-            
+
             0b00010:        (INS_SEL,  'sel',                IF_THUMB32),       # rd, rn, rm
             0b00011:        (INS_CLZ,  'clz',                IF_THUMB32),
 
@@ -1098,7 +1098,7 @@ def ldm_32(va, val1, val2):
     rn = val1 & 0xf
     if val2 & 0x2000:
         raise InvalidInstruction("LDM instruction with stack indicated: 0x%x: 0x%x, 0x%x" % (va, val1, val2))
-        # PC not ok on some instructions...  
+        # PC not ok on some instructions...
     wback = (val1 >> 5) & 1
 
     oper0 = ArmRegOper(rn, va=va)
@@ -1112,7 +1112,7 @@ def ldm_32(va, val1, val2):
 def pop_32(va, val1, val2):
     if val2 & 0x2000:
         raise InvalidInstruction("LDM instruction with stack indicated: 0x%x: 0x%x, 0x%x" % (va, val1, val2))
-        # PC not ok on some instructions...  
+        # PC not ok on some instructions...
     oper0 = ArmRegListOper(val2)
     opers = (oper0, )
     flags = IF_THUMB32
@@ -1124,7 +1124,7 @@ def pop_32(va, val1, val2):
 def push_32(va, val1, val2):
     if val2 & 0x2000:
         raise InvalidInstruction("LDM instruction with stack indicated: 0x%x: 0x%x, 0x%x" % (va, val1, val2))
-        # PC not ok on some instructions...  
+        # PC not ok on some instructions...
     oper0 = ArmRegListOper(val2)
     opers = (oper0, )
     return COND_AL, None, None, opers, None, 0
@@ -1588,10 +1588,10 @@ def coproc_simd_32(va, val1, val2):
                 bytez=struct.pack("<HH", val, val2), va=va-4)
 
     if coproc & 0b1110 != 0b1010:   # apparently coproc 10 and 11 are not allowed...
-        if op1 == 0b000100: 
+        if op1 == 0b000100:
             # mcrr/mcrr2 (a8-476)
             mnem, opcode = (('mcrr', INS_MCRR),('mcrr2', INS_MCRR2))[(val1>12)&1]
-            
+
             Rt2 = val1 & 0xf
             Rt = (val2>>12) & 0xf
             opc1 = (val2>>4) & 0xf
@@ -1608,7 +1608,7 @@ def coproc_simd_32(va, val1, val2):
         elif op1 == 0b000101:
             # mrrc/mrrc2 (a8-492)
             mnem, opcode = (('mrrc', INS_MRRC),('mrrc2',INS_MRRC2))[(val1>12)&1]
-            
+
             Rt2 = val1 & 0xf
             Rt = (val2>>12) & 0xf
             opc1 = (val2>>4) & 0xf
@@ -1626,7 +1626,7 @@ def coproc_simd_32(va, val1, val2):
             # stc/stc2 (a8-660)
             # ldc/ldc2 immediate/literal (if Rn == 0b1111) (a8-390/392)
             mnem, opcode = (('stc', INS_STC),('ldc', INS_LDC),('stc2', INS_STC2),('ldc2', INS_LDC2))[((val1>>11)&2) | (op1 & 1)]
-            
+
             pudwl = (val1>>4) & 0x1f
             Rn = (val1) & 0xf
             CRd = (val2>>12) & 0xf
@@ -1642,7 +1642,7 @@ def coproc_simd_32(va, val1, val2):
                 ArmCoprocRegOper(CRd),
                 ArmImmOffsetOper(Rn, offset*4, va, pubwl=pudwl),
             )
-            
+
         elif op1 & 0b110000 == 0b100000 and op == 0:
             # cdp/cdp2 (a8-356)
             opc1 =      (val1>>4) & 0xf
@@ -1660,7 +1660,7 @@ def coproc_simd_32(va, val1, val2):
                 ArmCoprocRegOper(CRm),
                 ArmCoprocOpcodeOper(opc2),
             )
-            
+
         elif op1 & 0b110000 == 0b100000 and op == 1:    # 10xxx0 and 10xxx1
             # mcr/mcr2 (a8-474)
             # mrc/mrc2 (a8-490)
@@ -1681,7 +1681,7 @@ def coproc_simd_32(va, val1, val2):
                 ArmCoprocRegOper(CRm),
                 ArmCoprocOpcodeOper(opc2),
             )
-            
+
         else:
             bytez = struct.pack("<HH", val1, val2)
             raise envi.InvalidInstruction(
@@ -1693,7 +1693,7 @@ def coproc_simd_32(va, val1, val2):
         opcode = 0
         iflags = 0
         opers = []
-        
+
         if op1 & 0b110000 == 0b100000:
             if op == 0:
                 # fp dp (a7-270)
@@ -1715,7 +1715,7 @@ def coproc_simd_32(va, val1, val2):
 
             # adv simd fp (a7-272)
             tmop1 = op1 & 0b11011
-            
+
             if (op1 & 0b11010) in (0b10, 0b11010):
                 bytez = struct.pack("<HH", val1, val2)
                 raise InvalidInstruction(mesg="INVALID ENCODING", bytez=bytez, va=va)
@@ -1786,14 +1786,14 @@ from envi.archs.arm.disasm import _do_adv_simd_32, _do_fp_dp, _do_adv_simd_ldst_
 def fp_dp(va, val1, val2):
     opcode, mnem, opers, iflags, simdflags = _do_fp_dp(va, val1, val2)
     return COND_AL, opcode, mnem, opers, iflags, simdflags
-   
+
 def adv_simd_ldst_32(va, val1, val2):
     val = (val1 << 16) | val2
     u = (val1 >> 12) & 1
     opcode, mnem, opers, iflags, simdflags = _do_adv_simd_ldst_32(val, va, u)
     #print "simdflags: %r" % simdflags
     return COND_AL, opcode, mnem, opers, iflags, simdflags
-   
+
 def adv_simd_32(va, val1, val2):
     val = (val1 << 16) | val2
     u = (val1 >> 12) & 1
@@ -1842,7 +1842,7 @@ def adv_xfer_arm_ext_32(va, val1, val2):
             else:
                 bytez = struct.pack("<I", val)
                 raise InvalidInstruction(mesg="INVALID ENCODING: adv_xfer_arm_ext_32: l=0. c=0, a != (0, 7)", bytez=bytez, va=va)
-                
+
         else:   # c == 1
             if (a & 0b100) == 0:
                 # p.A8-940
@@ -1907,7 +1907,7 @@ def adv_xfer_arm_ext_32(va, val1, val2):
             else:
                 bytez = struct.pack("<I", val)
                 raise InvalidInstruction(mesg="INVALID ENCODING: adv_xfer_arm_ext_32: l=1. c=0, a != (0, 7)", bytez=bytez, va=va)
-                
+
         else:   # c == 1
             # p.A8-942
             mnem, opcode = 'vmov', INS_VMOV
@@ -2135,10 +2135,10 @@ thumb_base = [
 
 thumb1_extension = [
     ('11100',       (INS_B,  'b',       pc_imm11,           envi.IF_BRANCH|envi.IF_NOFALL)),        # B <imm11>
-    ('1111',        (INS_BL, 'bl',      branch_misc,       envi.IF_CALL | IF_THUMB32)),   # BL/BLX <addr25> 
+    ('1111',        (INS_BL, 'bl',      branch_misc,       envi.IF_CALL | IF_THUMB32)),   # BL/BLX <addr25>
 ]
 
-# FIXME: need to take into account ThumbEE 
+# FIXME: need to take into account ThumbEE
 # 32-bit Thumb instructions start with:
 # 0b11101
 # 0b11110
@@ -2200,7 +2200,7 @@ thumb2_extension = [
     #('1110101',             (85,'dp_sr',    dp_shift_32,         IF_THUMB32)),
     ('11101010000',         (INS_AND, 'and',      dp_shift_32,        IF_THUMB32)),  # tst if rd=1111 and s=1
     ('11101010001',         (INS_BIC, 'bic',      dp_shift_32,        IF_THUMB32)),
-    
+
     ('1110101001000',       (INS_ORR, 'orr',      dp_shift_32,        IF_THUMB32)),
     ('11101010010010',      (INS_ORR, 'orr',      dp_shift_32,        IF_THUMB32)),
     ('111010100100110',     (INS_ORR, 'orr',      dp_shift_32,        IF_THUMB32)),
@@ -2296,7 +2296,7 @@ thumb2_extension = [
     ('11110111101',         (INS_USAT, 'usat',    dp_bin_imm_32,      IF_THUMB32)),  # usat16 if val2=0000xxxx00xxxxxx
     ('11110111110',         (INS_UBFX, 'ubfx',    ubfx_32,            IF_THUMB32)),
     ('11110111111',         (None, 'branchmisc',  branch_misc,        IF_THUMB32)),    # necessary
-    
+
     # stores, loads, etc...
     ('111110000000',        (INS_STR, 'str', ldr_shift_32,        IF_B | IF_THUMB32)),
     ('111110000001',        (None, 'ldrb_memhints32', ldrb_memhints_32,  IF_THUMB32)),
@@ -2380,6 +2380,14 @@ class ThumbDisasm:
         self._doModeSwitch = doModeSwitch
         self.setEndian(endian)
 
+        # Dirty patch for python2/3 compatibility.
+        # Until a good way py2/3 compatible method for converting
+        # strings -> bytes -> ints is found this should get by.
+        if '2.7' in sys.version[:3]:
+            self.disasmFunc = self.disasm2
+        else:
+            self.disasmFunc = self.disasm3
+
     def setEndian(self, endian):
         self.endian = endian
         self.hfmt = ("<H", ">H")[endian]
@@ -2387,8 +2395,10 @@ class ThumbDisasm:
     def getEndian(self):
         return self.endian
 
+    def disasm(self, bytesz, offset, va, trackMode=True):
+        return self.disasmFunc(bytesz, offset, va, trackMode)
 
-    def disasm(self, bytez, offset, va, trackMode=True):
+    def disasm2(self, bytez, offset, va, trackMode=True):
         oplen = None
         flags = 0
         simdflags = 0
@@ -2432,18 +2442,86 @@ class ThumbDisasm:
             oplen = 2
             # print "OPLEN (16bit): ", oplen
 
-        # since our flags determine how the instruction is decoded later....  
+        # since our flags determine how the instruction is decoded later....
         # performance-wise this should be set as the default value instead of 0, but this is cleaner
         if not (flags & envi.ARCH_MASK):
             flags |= self._optype
 
         #print opcode, mnem, olist, flags
-        if (olist is not None and 
-                len(olist) and 
+        if (olist is not None and
+                len(olist) and
                 isinstance(olist[0], ArmRegOper) and
-                olist[0].involvesPC() and 
+                olist[0].involvesPC() and
                 opcode not in no_update_Rd ):
-            
+
+            showop = True
+            flags |= envi.IF_NOFALL
+
+        if mnem is None or type(mnem) == int:
+            raise Exception("mnem == %r!  0x%xi (thumb)" % (mnem, opval))
+
+        #print "simdflags: %r" % simdflags
+        op = ThumbOpcode(va, opcode, mnem, cond, oplen, olist, flags, simdflags)
+        #print hex(va), oplen, len(op), op.size, hex(op.iflags)
+        return op
+
+    def disasm3(self, bytez, offset, va, trackMode=True):
+        oplen = None
+        flags = 0
+        simdflags = 0
+        va &= -2
+        offset &= -2
+        bytez = bytez.encode('latin-1')
+        val, = struct.unpack_from(self.hfmt, bytez, offset)
+
+        try:
+            opcode, mnem, opermkr, flags = self._tree.getInt(val, 16)
+            #print opcode, mnem, opermkr, flags
+        except TypeError:
+            raise envi.InvalidInstruction(
+                    mesg="disasm parser cannot find instruction",
+                    bytez=bytez[offset:offset+2], va=va)
+
+        #print "FLAGS: ", hex(va),hex(flags)
+        if flags & IF_THUMB32:
+            val2, = struct.unpack_from(self.hfmt, bytez, offset+2)
+            cond, nopcode, nmnem, olist, nflags, simdflags = opermkr(va+4, val, val2)
+            #print "simdflags: %r" % simdflags
+
+            if nmnem is not None:   # allow opermkr to set the mnem
+                mnem = nmnem
+                opcode = nopcode
+            if nflags is not None:
+                flags = nflags
+                #print "FLAGS: ", repr(olist), repr(flags)
+            oplen = 4
+            # print "OPLEN: ", oplen
+
+        else:
+            opnuggets = opermkr(va+4, val)
+            if len(opnuggets) == 5:
+                cond, olist, nflags, opcode, mnem = opnuggets
+            else:
+                cond, olist, nflags = opnuggets
+
+            if nflags is not None:
+                flags = nflags
+                #print "FLAGS: ", repr(olist), repr(flags)
+            oplen = 2
+            # print "OPLEN (16bit): ", oplen
+
+        # since our flags determine how the instruction is decoded later....
+        # performance-wise this should be set as the default value instead of 0, but this is cleaner
+        if not (flags & envi.ARCH_MASK):
+            flags |= self._optype
+
+        #print opcode, mnem, olist, flags
+        if (olist is not None and
+                len(olist) and
+                isinstance(olist[0], ArmRegOper) and
+                olist[0].involvesPC() and
+                opcode not in no_update_Rd ):
+
             showop = True
             flags |= envi.IF_NOFALL
 
