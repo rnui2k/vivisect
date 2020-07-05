@@ -54,7 +54,7 @@ def loadExtensions(vdb, trace):
             filebytes = file(filepath, 'r').read()
             mod.__file__ = filepath
             try:
-                exec filebytes in mod.__dict__
+                exec(filebytes in mod.__dict__)
                 mod.vdbExtension(vdb, trace)
             except Exception as  e:
                 vdb.vprint( traceback.format_exc() )
