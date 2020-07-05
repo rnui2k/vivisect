@@ -4,7 +4,7 @@ import envi.registers as e_reg
 '''
 Strategy:
     * Use only distinct register for Register Context (unique in each bank)
-    * Store a lookup table for the different banks of registers, based on the 
+    * Store a lookup table for the different banks of registers, based on the
         register data in proc_modes (see const.py)
     * Emulator does translation from register/mode to actual storage container
         using reg_table and some math (see _getRegIdx)
@@ -43,7 +43,7 @@ arm_metas = [
 REG_APSR_MASK = 0xffff0000
 
 # build a translation table to allow for fast access of banked registers
-modes = proc_modes.keys()
+modes = list(proc_modes.keys())
 modes.sort()
 
 reg_table = [ x for x in range(17 * REGS_PER_MODE) ]
@@ -61,7 +61,7 @@ for modenum in modes[1:]:       # skip first since we're already done
         reg_table[ridx+offset] = ridx
 
         rnm, rsz = arm_regs[ridx]
-        reg_table_data[ridx+offset] = ('%s_%s' % (rnm, msname), rsz) 
+        reg_table_data[ridx+offset] = ('%s_%s' % (rnm, msname), rsz)
 
     # mode-regs (not including PC)
     for ridx in range(mode_reg_count, 15):
@@ -71,20 +71,20 @@ for modenum in modes[1:]:       # skip first since we're already done
         reg_data.append((regname, 32))
         reg_table[ridx+offset] = idx
 
-        reg_table_data[ridx+offset] = (regname, rsz) 
+        reg_table_data[ridx+offset] = (regname, rsz)
 
     # PC
     reg_table[PSR_offset-3] = 15
     reg_table_data[PSR_offset-3] = ('pc_%s' % (msname), 32)
     # CPSR
     reg_table[PSR_offset-2] = 16   # SPSR....??
-    reg_table_data[PSR_offset-2] = ('CPSR_%s' % (msname), 32) 
+    reg_table_data[PSR_offset-2] = ('CPSR_%s' % (msname), 32)
     # NIL
     reg_table[PSR_offset-1] = 17
-    reg_table_data[PSR_offset-1] = ('NIL_%s' % (msname), 32) 
+    reg_table_data[PSR_offset-1] = ('NIL_%s' % (msname), 32)
     # PSR
     reg_table[PSR_offset] = len(reg_data)
-    reg_table_data[PSR_offset] = ('SPSR_%s' % (msname), 32) 
+    reg_table_data[PSR_offset] = ('SPSR_%s' % (msname), 32)
     reg_data.append(("SPSR_"+msname, 32))
 
 # done with banked register translation table
