@@ -9,7 +9,7 @@ import collections
 
 from binascii import hexlify
 
-from exc import *
+from .exc import *
 import visgraph.pathcore as vg_pathcore
 
 def guid(size=16):
@@ -112,7 +112,7 @@ class Graph:
             node1 = graph.getNode(n1)
             node2 = graph.getNode(n2)
             self.addEdge(node1, node2, eid=eid, eprops=eprops)
-        
+
 
     def wipeGraph(self):
         '''
@@ -241,7 +241,7 @@ class Graph:
         Add a Node object to the graph.  Returns the node. (nid,nprops)
 
         Example: node = g.addNode()
-                 - or - 
+                 - or -
                  node = g.addNode('woot', {'height':20, 'width':20})
 
         NOTE: If nid is unspecified, it is considered an 'anonymous'
@@ -537,7 +537,7 @@ class Graph:
             ret.append(g)
 
         return ret
-                
+
 
     def pathSearchOne(self, *args, **kwargs):
         for p in self.pathSearch(*args, **kwargs):
