@@ -1,7 +1,7 @@
 
 from envi.archs.arm import *
 
-import disasm as th_disasm
+from . import disasm as th_disasm
 
 class Thumb16Module(ThumbModule):
 
