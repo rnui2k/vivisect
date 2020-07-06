@@ -251,11 +251,11 @@ class ElfNote(vstruct.VStruct):
 
     def pcb_namesz(self):
         # padded to 4 byte alignment
-        namesz = ((self.namesz +3) /4) *4
+        namesz = int((self.namesz +3) /4) *4
         self['name'].vsSetLength( namesz )
 
     def pcb_descsz(self):
         # padded to 4 byte alignment
-        descct = int((self.descsz +3) /4)
+        descct = int(((self.descsz +3) / 4))
         elems = [ v_uint32() for i in range(descct) ]
         self.desc = vstruct.VArray(elems=elems)
