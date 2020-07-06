@@ -24,7 +24,7 @@ def ffTermFptrArray(vw, va, max=100):
             vw.makeFunction(val)
             ret.append(val)
         except Exception as  e:
-            print "FIXME (ffTermFptrArray): ",e
+            print("FIXME (ffTermFptrArray): ",e)
         va += vw.psize
     return ret
 
