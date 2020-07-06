@@ -1,5 +1,4 @@
 import struct
-import inspect
 
 class v_enum(object):
     def __init__(self):
@@ -153,7 +152,6 @@ class v_number(v_prim):
 
         if self._vs_fmt != None:
             b = fbytes[ offset : sizeoff ]
-            print(type(b), b)
             self._vs_value = struct.unpack(self._vs_fmt, b)[0]
 
         else:
@@ -490,7 +488,6 @@ class v_bytes(v_prim):
 
     def __init__(self, size=0, vbytes=None):
         v_prim.__init__(self)
-        print("VBYTES:", vbytes, size)
         if vbytes == None:
             vbytes = '\x00' * size
         self._vs_length = len(vbytes)
@@ -505,7 +502,6 @@ class v_bytes(v_prim):
 
     def vsParse(self, fbytes, offset=0):
         offend = offset + self._vs_length
-        print("Before Returning from bytes.vsParse", offend, self._vs_length)
         self._vs_value = fbytes[offset : offend]
         return offend
 
@@ -513,10 +509,6 @@ class v_bytes(v_prim):
         return self._vs_value
 
     def vsSetLength(self, size):
-        curframe = inspect.currentframe()
-        calframe = inspect.getouterframes(curframe,2)
-        print("Being called by: ", calframe[1][3])
-        print("v_bytes is being set to: ", size)
         size = int(size)
         self._vs_length = size
         self._vs_fmt = '%ds' % size
