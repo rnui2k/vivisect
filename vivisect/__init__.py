@@ -2466,7 +2466,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
             parts = normname.split('.')
             normname = '_'.join(parts[:-1])
 
-        ok = string.letters + string.digits + '_'
+        ok = string.ascii_letters + string.digits + '_'
 
         chars = list(normname)
         for i in range(len(chars)):
