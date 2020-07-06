@@ -2515,7 +2515,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         """
         Store a piece of file specific metadata (python primatives are best for values)
         """
-        if not self.filemeta.has_key(fname):
+        if not fname in self.filemeta:
             raise Exception("Invalid File: %s" % fname)
         self._fireEvent(VWE_SETFILEMETA, (fname, key, value))
 
