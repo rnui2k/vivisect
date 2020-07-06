@@ -579,7 +579,6 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         Parse out the symbols that this elf binary has for us.
         """
         for sec in self.sections:
-            #print(self.sections)
             if sec.sh_type == SHT_SYMTAB:
                 sym = self._cls_symbol(bigend=self.bigend)
                 symtab = self.readAtOffset(sec.sh_offset, sec.sh_size)
@@ -849,6 +848,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
 
                     offset = note.vsParse(notebytes, offset=offset)
                     yield note
+
             except Exception as e:
                 logger.warn("Elf.getNotes() Exception: %r", e)
 
