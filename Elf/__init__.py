@@ -501,7 +501,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         strtabbytes = self.readAtRva(dynstrtab, strsz)
 
         self.dynstrtabmeta = (dynstrtab, strsz)
-        self.dynstrtab = strtabbytes.split('\0')
+        self.dynstrtab = strtabbytes.split(b'\0')
 
         # since our string table should certainly end in '\0', we'll have an empty string
         # at the end.  since this array is used to determine the number of symbols, we
@@ -579,6 +579,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
         Parse out the symbols that this elf binary has for us.
         """
         for sec in self.sections:
+            #print(self.sections)
             if sec.sh_type == SHT_SYMTAB:
                 sym = self._cls_symbol(bigend=self.bigend)
                 symtab = self.readAtOffset(sec.sh_offset, sec.sh_size)
@@ -814,11 +815,12 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
             return None
         return self.readAtOffset(sec.sh_offset, sec.sh_size)
 
-    def getStrtabString(self, offset, section=".strtab"):
+    def getStrtabString(self, offset, section='.strtab'):
+        section = section.encode('utf-8')
         sec = self.getSection(section)
-        bytes = self.readAtOffset(sec.sh_offset, sec.sh_size)
-        index = bytes.find("\x00", offset)
-        return bytes[offset:index]
+        bytesz = self.readAtOffset(sec.sh_offset, sec.sh_size)
+        index = bytesz.find(b"\x00", offset)
+        return bytesz[offset:index]
 
     def getNotes(self):
         '''
@@ -1070,7 +1072,7 @@ class Elf(vs_elf.Elf32, vs_elf.Elf64):
 
         dynstrtabva, strsz = self.dynstrtabmeta
         strings = self.readAtRva(dynstrtabva, strsz)
-        strend = strings.find('\0', stroff)
+        strend = strings.find(b'\0', stroff)
         if stroff > len(strings):
             return None
 
