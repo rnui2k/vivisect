@@ -1,8 +1,11 @@
 import sys
 import functools
 import traceback
+try:
+    from Queue import Queue
+except ImportError:
+    from queue import Queue
 
-from Queue import Queue
 from threading import currentThread
 
 try:
@@ -91,7 +94,7 @@ class QFireThread(QtCore.QThread):
         self.args = args
         self.kwargs = kwargs
         self.callable = callable
-    
+
     def run(self):
         self.callable(*self.args, **self.kwargs)
 
