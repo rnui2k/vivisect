@@ -112,7 +112,8 @@ class VQTreeModel(QtCore.QAbstractItemModel):
     def sort(self, colnum, order=0):
         cmpf = VQTreeSorter(colnum, order)
         self.layoutAboutToBeChanged.emit()
-        self.rootnode.children.sort(cmp=cmpf)
+        from functools import cmp_to_key
+        sorted(self.rootnode.children,key=cmp_to_key(cmpf))
         self.layoutChanged.emit()
 
     def flags(self, index):
