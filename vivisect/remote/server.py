@@ -2,7 +2,10 @@ import os
 import sys
 import time
 import cobra
-import Queue
+try:
+    import Queue
+except ImportError:
+    import queue as Queue
 import optparse
 import threading
 
