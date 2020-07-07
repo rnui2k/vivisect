@@ -594,11 +594,11 @@ class Amd64Disasm(e_i386.i386Disasm):
             mod,reg,rm = self.parse_modrm(ord(bytez[offset]), prefixes)
         #mod,reg,rm = self.parse_modrm(ord(bytes[offset]), prefixes)
         if mod == 0 and rm == 5:
-            imm = e_bits.parsebytes(bytes, offset + size, 4, sign=True)
+            imm = e_bits.parsebytes(bytez, offset + size, 4, sign=True)
             size += 4
             return(size, Amd64RipRelOper(imm, opersize))
 
-        return e_i386.i386Disasm.extended_parse_modrm(self, bytes, offset, opersize, regbase, prefixes)
+        return e_i386.i386Disasm.extended_parse_modrm(self, bytez, offset, opersize, regbase, prefixes)
 
     # NOTE: Override a bunch of the address modes to account for REX
     def ameth_0(self, operflags, operval, tsize, prefixes):
