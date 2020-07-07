@@ -1,4 +1,8 @@
-import cgi
+try:
+    from cgi import escape as cgi_escape
+except ImportError:
+    from html import escape as cgi_escape
+
 try:
     from PyQt5 import QtCore, QtGui, QtWebKit, QtWebKitWidgets
     from PyQt5.QtWebKitWidgets import *
@@ -180,7 +184,7 @@ class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
         self._appendInside(text)
 
     def addText(self, text, tag=None):
-        text = cgi.escape(text)
+        text = cgi_escape(text)
 
         if tag is not None:
             otag, ctag = tag
