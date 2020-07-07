@@ -423,7 +423,10 @@ class Amd64Disasm(e_i386.i386Disasm):
 
                     # Account for the table jump we made
                     offset += 1
-                    obyte = ord(bytez[offset])
+                    if isinstance(bytez[offset], int):
+                        obyte = bytez[offset]
+                    else:
+                        obyte = ord(bytez[offset])
                     continue
 
                 # We are now on the final table...
