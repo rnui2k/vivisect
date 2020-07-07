@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import imp
+import importlib
 import sys
 import time
 import cProfile
@@ -106,7 +106,7 @@ def main():
                 logger.debug("ANALYSIS TIME: %s" % (end-start))
 
         if args.modname is not None:
-            module = imp.load_module("custom_analysis", file(args.modname, "rb"), args.modname, ('.py', 'U', 1))
+            module = importlib.load_module("custom_analysis", file(args.modname, "rb"), args.modname, ('.py', 'U', 1))
             module.analyze(vw)
 
         logger.info('stats: %r' % (vw.getStats(),))
