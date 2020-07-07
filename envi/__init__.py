@@ -171,9 +171,9 @@ class ArchitectureModule:
 
         "info" should be a dictionary with the {'arch': ARCH_FOO}
 
-        eg.  for ARM, the ARM disassembler would hand in 
+        eg.  for ARM, the ARM disassembler would hand in
             {'arch': ARCH_ARMV7}
-        
+
         and if va is odd, that architecture's implementation would return
             (va & -2), {'arch': ARCH_THUMB}
         '''
@@ -461,9 +461,9 @@ class Opcode:
 
     def genRefOpers(self, emu=None):
         '''
-        Operand generator, yielding an (oper-index, operand) tuple from this 
-        Opcode... but only for operands which make sense for XREF analysis.  
-        Override when architecture makes use of odd operands like the program 
+        Operand generator, yielding an (oper-index, operand) tuple from this
+        Opcode... but only for operands which make sense for XREF analysis.
+        Override when architecture makes use of odd operands like the program
         counter, which returns a real value even without an emulator.
         '''
         for oidx, o in enumerate(self.opers):
@@ -540,7 +540,7 @@ class Emulator(e_reg.RegisterContext, e_mem.MemoryObject):
         '''
         Set a (previously initialized) emulator option.
         '''
-        if not self._emu_opts.has_key(opt):
+        if not opt in self._emu_opts:
             raise Exception('Unknown Emu Opt: %s' % opt)
         self._emu_opts[opt] = val
 
@@ -549,10 +549,10 @@ class Emulator(e_reg.RegisterContext, e_mem.MemoryObject):
         Retrieve the current value of an emulator option.
         ( emu impls may directly access _emu_opts for speed )
         '''
-        if not self._emu_opts.has_key(opt):
+        if not opt in self._emu_opts:
             raise Exception('Unknown Emu Opt: %s' % opt)
         return self._emu_opts.get(opt)
- 
+
     def setEndian(self, endian):
         '''
         Sets Endianness for the Emulator.
@@ -595,7 +595,7 @@ class Emulator(e_reg.RegisterContext, e_mem.MemoryObject):
 
     def executeOpcode(self, opobj):
         """
-        This is the core method for the 
+        This is the core method for the
         """
         raise ArchNotImplemented()
 
@@ -756,8 +756,8 @@ class Emulator(e_reg.RegisterContext, e_mem.MemoryObject):
 
     def intSubBase(self, subtrahend, minuend, ssize, msize):
         '''
-        Base for integer subtraction.  
-        Segmented such that order of operands can easily be overridden by 
+        Base for integer subtraction.
+        Segmented such that order of operands can easily be overridden by
         subclasses.  Does not set flags (arch-specific), and doesn't set
         the dest operand.  That's up to the instruction implementation.
 
@@ -783,7 +783,7 @@ class Emulator(e_reg.RegisterContext, e_mem.MemoryObject):
         Do the core of integer addition but only *return* the
         resulting value rather than assigning it.
 
-        Architectures shouldn't have to override this as operand order 
+        Architectures shouldn't have to override this as operand order
         doesn't matter
         """
         src = self.getOperValue(op, 0)
@@ -864,11 +864,11 @@ class CallingConvention(object):
                                         Currently the number is ignored
 
         retaddr_def  - where does the function get a return address from?
-            (CC_STACK, #) - on the stack, at offset 0 
+            (CC_STACK, #) - on the stack, at offset 0
             (CC_REG, REG_which) - in register "REG_which", eg. REG_LR
 
         retval_def  - where does the function return value go?
-            (CC_STACK, #) - on the stack, at offset 0 
+            (CC_STACK, #) - on the stack, at offset 0
             (CC_REG, REG_which) - in register "REG_which", eg. REG_EAX
 
         CC_REG      - Ret, Retval or Arg use a particular register
