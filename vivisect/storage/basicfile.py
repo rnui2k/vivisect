@@ -10,7 +10,7 @@ vivsig_cpickle = 'VIV'.ljust(8,'\x00')
 def saveWorkspaceChanges(vw, filename):
     elist = vw.exportWorkspaceChanges()
     if len(elist):
-        f = file(filename, 'ab')
+        f = open(filename, 'ab')
         pickle.dump(elist, f, protocol=2)
         f.close()
 
@@ -19,20 +19,20 @@ def saveWorkspace(vw, filename):
     vivEventsToFile(filename, events)
 
 def vivEventsAppendFile(filename, events):
-    f = file(filename, 'ab')
+    f = open(filename, 'ab')
     # Mime type for the basic workspace
     pickle.dump(events, f, protocol=2)
     f.close()
 
 def vivEventsToFile(filename, events):
-    f = file(filename, 'wb')
+    f = open(filename, 'wb')
     # Mime type for the basic workspace
     f.write(vivsig_cpickle)
     pickle.dump(events, f, protocol=2)
     f.close()
 
 def vivEventsFromFile(filename):
-    f = file(filename, "rb")
+    f = open(filename, "rb")
     vivsig = f.read(8)
 
     # check for various viv serial formats
@@ -51,6 +51,7 @@ def vivEventsFromFile(filename):
         except EOFError as  e:
             break
         except pickle.UnpicklingError as  e:
+            print(e)
             raise vivisect.InvalidWorkspace(filename, "invalid workspace file")
 
     f.close()

@@ -914,7 +914,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
             if c_int == 0 and count >= 4:
                 return count
 
-            elif c_int == 0 and (count == dlen or count == plen):
+            elif c_int == 1 and (count == dlen or count == plen):
                 return count
 
             if c not in string.printable:
