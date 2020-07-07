@@ -59,7 +59,7 @@ cfgtypes = {
     int:EnviConfigInt,
     int:EnviConfigInt,
     str:EnviConfigString,
-    unicode:EnviConfigString,
+    #unicode:EnviConfigString,
     bool:EnviConfigBool,
 }
 
