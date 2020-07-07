@@ -107,7 +107,7 @@ class VQTreeModel(QtCore.QAbstractItemModel):
             parent = self.rootnode
 
         row = parent.delete(rowdata)
-        print row
+        print(row)
 
     def sort(self, colnum, order=0):
         cmpf = VQTreeSorter(colnum, order)
