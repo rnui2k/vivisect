@@ -45,7 +45,7 @@ class CodeFlowContext(object):
 
         self._cf_recurse = recurse
         self._cf_exptable = exptable
-        self._cf_blocks = [] 
+        self._cf_blocks = []
         self._dynamic_branch_handlers = []
 
 
@@ -75,8 +75,8 @@ class CodeFlowContext(object):
     def _cb_branchtable(self, tableva, ptrva, destva):
         '''
         Extend CodeFlowContext and implement this method to receive
-        a callback for every conditional branch in a discovered 
-        "branch table" ( think jump/switch cases ).  
+        a callback for every conditional branch in a discovered
+        "branch table" ( think jump/switch cases ).
         tableva     - The base address of the table
         ptrva       - The address of the pointer for this index
         destva      - The destination address (deref of ptrva)
@@ -89,10 +89,10 @@ class CodeFlowContext(object):
         '''
         if codeflow finds a branch to a non-discrete value (eg. to a register)
         we handle it here.  by default, we simply track the dynamic branch in a global
-        VaSet which is added to every workspace. 
+        VaSet which is added to every workspace.
         '''
         '''
-        When code-flow analysis runs into an indirect branch it doesn't know 
+        When code-flow analysis runs into an indirect branch it doesn't know
         what to do with, the architecture can take a crack at it.
         '''
         for cb in self._dynamic_branch_handlers:
