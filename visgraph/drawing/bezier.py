@@ -39,7 +39,7 @@ def calculate_bezier(points, steps = 30):
     return ret
 
 if __name__ == '__main__':
-    print calculate_bezier( [ (0,0), (3, 20), (20, 23), (20, 20)] )
+    print(calculate_bezier( [ (0,0), (3, 20), (20, 23), (20, 20)] ))
 
-    print calculate_bezier( [ (0,0), (10,10) ], 10)
+    print(calculate_bezier( [ (0,0), (10,10) ], 10))
 
