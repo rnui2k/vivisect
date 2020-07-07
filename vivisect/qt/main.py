@@ -257,7 +257,8 @@ class VQVivMainWindow(viv_base.VivEventDist, vq_app.VQMainCmdWindow):
 
         if compat_isNone(dwcls):
             names = self.vw.filemeta.keys()
-            names.sort()
+            #names.sort()
+            sorted(names)
             name = '+'.join(names)
             dwcls = settings.value('%s/DockClasses' % name)
             state = settings.value('%s/DockState' % name)
