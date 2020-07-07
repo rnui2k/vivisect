@@ -1896,12 +1896,8 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         if size <= 0:
             raise Exception("Invalid String Size: %d" % size)
         if self.getName(va) == None:
-            print("A")
             m = self.readMemory(va, size-1).replace(b"\n",b"")
-            print("B")
             self.makeName(va, "str_%s_%.8x" % (m[:16],va))
-            print("BB")
-        print("C")
         return self.addLocation(va, size, LOC_STRING)
 
     def makeUnicode(self, va, size=None):
