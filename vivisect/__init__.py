@@ -904,11 +904,17 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
                     return -1
 
             c = bytez[offset+count]
+            # Python2/3 compatiblility patch
+            if isinstance(c, int):
+                c_int = c
+            else:
+                c_int = ord(c)
+
             # The "strings" algo basically says 4 or more...
-            if ord(c) == 0 and count >= 4:
+            if c_int == 0 and count >= 4:
                 return count
 
-            elif ord(c) == 0 and (count == dlen or count == plen):
+            elif c_int == 0 and (count == dlen or count == plen):
                 return count
 
             if c not in string.printable:
