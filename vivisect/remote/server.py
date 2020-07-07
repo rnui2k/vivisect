@@ -110,7 +110,7 @@ class VivServer:
                     wsinfo[2] = []  # start a new events list...
 
                 viv_basicfile.vivEventsAppendFile(path, events)
-                
+
     def _req_wsinfo(self, wsname):
         wsinfo = self.wsdict.get(wsname)
         if wsinfo == None:
@@ -134,7 +134,7 @@ class VivServer:
 
         wsdir = os.path.dirname(wspath)
         if not os.path.isdir(wsdir):
-            os.makedirs(wsdir, 0750)
+            os.makedirs(wsdir, 0o0750)
 
         viv_basicfile.vivEventsToFile(wspath, events)
         wsinfo = [ threading.Lock(), wspath, [], {} ]
@@ -228,13 +228,13 @@ def runMainServer(dirname=''):
     daemon.serve_forever()
 
 def usage():
-    print 'Usage: python -m vivisect.tools.server <vivdir>'
-    print ''
-    print 'NOTE: vivdir is simply a directory full of viv files to share'
+    print( 'Usage: python -m vivisect.tools.server <vivdir>')
+    print( '')
+    print( 'NOTE: vivdir is simply a directory full of viv files to share')
     sys.exit(0)
 
 if __name__ == '__main__':
-    
+
     parser = optparse.OptionParser(usage='python -m vivisect.remote.server <vivdir>')
     options, argv = parser.parse_args()
 
