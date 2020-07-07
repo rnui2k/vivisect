@@ -703,8 +703,10 @@ class i386Disasm:
         """
         Return a tuple of (size, Operand)
         """
-
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
 
         size = 1
 
@@ -1045,17 +1047,26 @@ class i386Disasm:
         return self.extended_parse_modrm(bytez, offset, tsize, prefixes=prefixes)
 
     def ameth_n(self, bytez, offset, tsize, prefixes, operflags):
-        mod,reg,rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (1, i386RegOper(rm + self.ROFFSETMMX, tsize))
 
     def ameth_q(self, bytez, offset, tsize, prefixes, operflags):
-        mod,reg,rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         if mod == 3:
             return (1, i386RegOper(rm + self.ROFFSETMMX, tsize))
         return self.extended_parse_modrm(bytez, offset, tsize, prefixes=prefixes)
 
     def ameth_w(self, bytez, offset, tsize, prefixes, operflags):
-        mod,reg,rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         if mod == 3:
             return (1, i386RegOper(rm + self.ROFFSETSIMD, tsize))
         return self.extended_parse_modrm(bytez, offset, tsize, prefixes=prefixes)
@@ -1075,33 +1086,54 @@ class i386Disasm:
         return (self.ptrsize, i386ImmMemOper(imm, tsize))
 
     def ameth_g(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         if tsize == 1: reg = self.byteRegOffset(reg, prefixes)
         elif tsize == 2: reg += RMETA_LOW16
         return (0, i386RegOper(reg, tsize))
 
     def ameth_c(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (0, i386RegOper(reg+self.ROFFSETCTRL, tsize))
 
     def ameth_d(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (0, i386RegOper(reg+self.ROFFSETDEBUG, tsize))
 
     def ameth_p(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (0, i386RegOper(reg+self.ROFFSETMMX, tsize))
 
     def ameth_s(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (0, i386RegOper(reg+self.ROFFSETSEG, tsize))
 
     def ameth_u(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (1, i386RegOper(rm+self.ROFFSETSIMD, tsize))
 
     def ameth_v(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
         return (0, i386RegOper(reg+self.ROFFSETSIMD, tsize))
 
     def ameth_x(self, bytez, offset, tsize, prefixes, operflags):
