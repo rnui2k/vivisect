@@ -293,8 +293,8 @@ class VQVivFunctionsView(VQVivTreeView):
 
 vaset_coltypes = {
     VASET_STRING:str,
-    VASET_ADDRESS:long,
-    VASET_INTEGER:long,
+    VASET_ADDRESS:int,
+    VASET_INTEGER:int,
 }
 
 
