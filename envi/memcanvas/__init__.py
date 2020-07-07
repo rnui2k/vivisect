@@ -132,7 +132,7 @@ class MemoryCanvas(object):
         """
         if sys.stdout.encoding:
             text = text.encode(sys.stdout.encoding, 'replace')
-        sys.stdout.write(text)
+        sys.stdout.write(str(text))
 
     def addNameText(self, text, name=None, typename='name'):
         if name == None:
