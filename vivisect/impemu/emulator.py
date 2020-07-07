@@ -438,7 +438,7 @@ class WorkspaceEmulator:
 
     def nextVivTaint(self):
         # One page into the new taint range
-        return self.taintva.next() + 4096
+        return next(self.taintva) + 4096
 
     def setVivTaint(self, typename, taint):
         '''
