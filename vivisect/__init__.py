@@ -486,7 +486,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         self.fmodlist.remove(modname)
 
     def createEventChannel(self):
-        chanid = self.chanids.next()
+        chanid = next(self.chanids)
         self.chan_lookup[chanid] = Queue.Queue()
         return chanid
 
