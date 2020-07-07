@@ -289,8 +289,10 @@ class Amd64Disasm(e_i386.i386Disasm):
         pho_prefixes = 0  # faux prefixes...don't immediately apply them, they may not be the prefixes we're looking for
 
         while True:
-
-            obyte = ord(bytez[offset])
+            if isinstance(bytez[offset], int):
+                obyte = bytez[offset]
+            else:
+                obyte = ord(bytez[offset])
 
             # This line changes in 64 bit mode
             p = self._dis_prefixes[obyte]
@@ -394,7 +396,10 @@ class Amd64Disasm(e_i386.i386Disasm):
             else:
                 # treat nothing as a mandatory prefix (or we defaulted into here if we got no mandatory
                 # prefixes). For most instructions this will be the normal case.
-                obyte = ord(bytez[offset])
+                if isinstance(bytez[offset], int):
+                    obyte = bytez[offset]
+                else:
+                    obyte = ord(bytez[offset])
                 all_prefixes = prefixes | pho_prefixes
 
             while True:
@@ -577,13 +582,17 @@ class Amd64Disasm(e_i386.i386Disasm):
 
         return val
 
-    def extended_parse_modrm(self, bytes, offset, opersize, regbase=0, prefixes=0):
+    def extended_parse_modrm(self, bytez, offset, opersize, regbase=0, prefixes=0):
         """
         Return a tuple of (size, Operand)
         """
         size = 1
         # FIXME this would be best to not parse_modrm twice.  tweak it.
-        mod,reg,rm = self.parse_modrm(ord(bytes[offset]), prefixes)
+        if isinstance(bytez[offset], int):
+            mod,reg,rm = self.parse_modrm(bytez[offset], prefixes)
+        else:
+            mod,reg,rm = self.parse_modrm(ord(bytez[offset]), prefixes)
+        #mod,reg,rm = self.parse_modrm(ord(bytes[offset]), prefixes)
         if mod == 0 and rm == 5:
             imm = e_bits.parsebytes(bytes, offset + size, 4, sign=True)
             size += 4
