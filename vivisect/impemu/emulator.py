@@ -106,7 +106,7 @@ class WorkspaceEmulator:
             # Create some pre-made taints for positive stack indexes
             # NOTE: This is *ugly* for speed....
             taints = [ self.setVivTaint('funcstack', i * self.psize) for i in range(20) ]
-            taintbytes = ''.join([ e_bits.buildbytes(taint,self.psize) for taint in taints ])
+            taintbytes = b''.join([ e_bits.buildbytes(taint,self.psize) for taint in taints ])
 
             self.writeMemory(self.stack_pointer, taintbytes)
         else:
