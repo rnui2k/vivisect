@@ -90,7 +90,8 @@ class MemoryCanvas(object):
 
     def getRendererNames(self):
         ret = self.renderers.keys()
-        ret.sort()
+        #ret.sort()
+        sorted(ret)
         return ret
 
     def setRenderer(self, name):
