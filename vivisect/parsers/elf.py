@@ -510,15 +510,13 @@ def loadElfIntoWorkspace(vw, elf, filename=None, baseaddr=None):
                 if s.st_other == Elf.STB_WEAK:
                     logger.info('WEAK symbol: 0x%x: %r', sva, sname)
                     vw.setVaSetRow('WeakSymbols', (sname, sva))
-                    dmglname = '__weak_' + dmglname
-
+                    dmglname = '__weak_'.encode('utf-8') + dmglname
                 if sva in impvas or sva in expvas:
                     imps = [imp for imp in vw.getImports() if imp[0] == sva]
                     exps = [exp for exp in vw.getExports() if exp[0] == sva]
                     logger.debug('skipping Symbol naming for existing Import/Export: 0x%x (%r) (%r) (%r)', sva, s.name, imps, exps)
                 else:
                     vw.makeName(sva, dmglname, filelocal=True, makeuniq=True)
-
             except Exception as e:
                 logger.warn("WARNING:\t%r",e)
 
