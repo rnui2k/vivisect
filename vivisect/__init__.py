@@ -954,20 +954,27 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
                     return -1
 
             c0 = bytes[offset+count]
+
+            if isinstance(c0, int):
+                c0_int = c0
+            else:
+                c0_int = ord(c0)
+
             if offset+count+1 >= len(bytes):
                 return -1
+
             c1 = bytes[offset+count+1]
 
             # If we find our null terminator after more
             # than 4 chars, we're probably a real string
-            if ord(c0) == 0:
+            if c0_int == 0:
                 if count > 8:
                     return count
                 return -1
 
             # If the first byte char isn't printable, then
             # we're probably not a real "simple" ascii string
-            if c0 not in string.printable:
+            if c0 not in string.printable.encode('utf-8'):
                 return -1
 
             # If it's not null,char,null,char then it's
