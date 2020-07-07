@@ -3,7 +3,8 @@ try:
     from PyQt5 import QtCore, QtGui, QtWebKit, QtWebKitWidgets
     from PyQt5.QtWebKitWidgets import *
     from PyQt5.QtWidgets import *
-except:
+except ImportError as e:
+    print(e)
     from PyQt4 import QtCore, QtGui, QtWebKit
     from PyQt4.QtWebKit import *
     from PyQt4.QtGui import *
@@ -52,7 +53,7 @@ class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
 
     @QtCore.pyqtSlot(str)
     def showMessage(self, message):
-        print "Message from website:", message
+        print("Message from website:", message)
 
     def renderMemory(self, va, size, rend=None):
 
