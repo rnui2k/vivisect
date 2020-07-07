@@ -112,7 +112,7 @@ class VdbCmdWidget(vqt.cli.VQCli, vtrace.qt.VQTraceNotifier):
             for line in lines:
                 line = self.cli.aliascmd(line)
                 cmd.Cmd.onecmd(self.cli, line)
-        except (KeyboardInterrupt as  SystemExit):
+        except KeyboardInterrupt as  SystemExit:
             raise
 
         if self.cli.shutdown.isSet():
