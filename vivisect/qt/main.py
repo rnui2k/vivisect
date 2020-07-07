@@ -303,7 +303,7 @@ class VQVivMainWindow(viv_base.VivEventDist, vq_app.VQMainCmdWindow):
         dock_classes = []
         guid = self.vw.getVivGuid()
         names = self.vw.filemeta.keys()
-        names.sort()
+        sorted(names)
         vivname = '+'.join(names)
 
         # Enumerate the current dock windows and set
