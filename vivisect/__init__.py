@@ -1893,13 +1893,15 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         """
         if size == None:
             size = self.asciiStringSize(va)
-
         if size <= 0:
             raise Exception("Invalid String Size: %d" % size)
-
         if self.getName(va) == None:
-            m = self.readMemory(va, size-1).replace("\n","")
+            print("A")
+            m = self.readMemory(va, size-1).replace(b"\n",b"")
+            print("B")
             self.makeName(va, "str_%s_%.8x" % (m[:16],va))
+            print("BB")
+        print("C")
         return self.addLocation(va, size, LOC_STRING)
 
     def makeUnicode(self, va, size=None):
@@ -2021,7 +2023,7 @@ class VivWorkspace(e_mem.MemoryObject, viv_base.VivWorkspaceCore):
         is found in the memory map)
         """
         offset, bytez = self.getByteDef(va)
-        foff = bytez.find('\x00', offset)
+        foff = bytez.find(b'\x00', offset)
         if foff == -1:
             return foff
         return (foff - offset) + 1
