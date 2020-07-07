@@ -60,13 +60,13 @@ class VQInput(vq_hotkeys.HotKeyMixin, QLineEdit):
 
     def loadHistory(self, filename):
         if os.path.isfile(filename):
-            hist = file(filename, 'r').readlines()[-1000:]
+            hist = open(filename, 'r').readlines()[-1000:]
             self.history = [ x.strip() for x in hist ]
             self.histidx = len(self.history)
 
     def saveHistory(self, filename):
         histbuf = '\n'.join( self.history[-1000:] )
-        file(filename, 'w').write( histbuf )
+        open(filename, 'w').write( histbuf )
 
 
 class VQCli(QWidget):
