@@ -45,7 +45,7 @@ class VQVivFuncgraphCanvas(vq_memory.VivCanvasBase):
             self.setZoomFactor( self.zoomFactor() + factord )
             event.accept()
             return
-        
+
         return e_qt_memcanvas.VQMemoryCanvas.wheelEvent(self, event)
 
     def mouseMoveEvent (self, event):
@@ -339,7 +339,7 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
         This is particularly helpful because comments and name changes don't
         immediately display.  Perhaps someday this will update only the blocks
         that have changed since last update, and be fast, so we can update
-        after every change.  
+        after every change.
         '''
         self._last_viewpt = self.mem_canvas.page().mainFrame().scrollPosition()
         # FIXME: history should track this as well and return to the same place
@@ -534,7 +534,7 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
 
             self._renderDoneSignal.emit()
         except Exception as e:
-            print e
+            print(e)
 
     def loadDefaultRenderers(self):
         vivrend = viv_rend.WorkspaceRenderer(self.vw)
@@ -554,7 +554,7 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
 
     def _hotkey_paintUp(self, va=None):
         '''
-        Paint the VA's from the selected basic block up to all possible 
+        Paint the VA's from the selected basic block up to all possible
         non-looping starting points.
         '''
         graph = viv_graphutil.buildFunctionGraph(self.vw, self.fva, revloop=True)
@@ -583,11 +583,11 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
         vqtevent('viv:colormap', colormap)
         return colormap
 
-        
+
     def _hotkey_paintDown(self, va=None):
         '''
-        Paint the VA's from the selected basic block down to all possible 
-        non-looping blocks.  This is valuable for determining what code can 
+        Paint the VA's from the selected basic block down to all possible
+        non-looping blocks.  This is valuable for determining what code can
         execute from any starting basic block, without a loop.
         '''
         #TODO: make overlapping colors available for multiple paintings
