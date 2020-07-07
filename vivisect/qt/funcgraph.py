@@ -239,6 +239,7 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
         e_qt_memory.EnviNavMixin.__init__(self)
         self.setEnviNavName('FuncGraph%d' % next(self.viewidx))
 
+
         self._renderDoneSignal.connect(self._refresh_cb)
 
         self.top_box = QWidget(parent=self)
