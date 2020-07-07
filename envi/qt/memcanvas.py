@@ -41,7 +41,7 @@ class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
         self.setPage(LoggerPage())
 
         htmlpage = e_q_html.template.replace('{{{jquery}}}', e_q_jquery.jquery_2_1_0)
-        self.setContent(htmlpage)
+        self.setContent(htmlpage.encode('utf-8'))
 
         frame = self.page().mainFrame()
         frame.evaluateJavaScript(e_q_jquery.jquery_2_1_0)
