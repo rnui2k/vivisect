@@ -76,7 +76,7 @@ class DcodeLoader(object):
             if self.path != None:
                 mod.__path__ = [self.path]
 
-            exec toutf8(self.fbytes) in mod.__dict__
+            exec(toutf8(self.fbytes) in mod.__dict__)
 
         return mod
 
@@ -96,7 +96,7 @@ class DcodeFinder(object):
 
         try:
 
-            fobj, filename, typeinfo = imp.find_module(name,path) 
+            fobj, filename, typeinfo = imp.find_module(name,path)
 
         except ImportError:
 
