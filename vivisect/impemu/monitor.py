@@ -76,6 +76,7 @@ class AnalysisMonitor(EmulationMonitor):
         # Add emulation anomalies
         for row in self.getAnomalies():
             va,msg = row
+            print("ROW", hex(row[0]), row)
             vw.setVaSetRow("Emulation Anomalies", row)
             vw.setComment(va, 'Emu Anomaly: %s' % (msg,),check=True)
 
@@ -116,7 +117,7 @@ class AnalysisMonitor(EmulationMonitor):
 
     def addDynamicBranchHandler(self, cb):
         '''
-        Add a callback handler for dynamic branches the code-flow resolver 
+        Add a callback handler for dynamic branches the code-flow resolver
         doesn't know what to do with
         '''
         if cb in self._dynamic_branch_handlers:

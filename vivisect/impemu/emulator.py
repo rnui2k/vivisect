@@ -347,7 +347,7 @@ class WorkspaceEmulator:
                             self.emumon.prehook(self, op, starteip)
                         except Exception as e:
                             if not self.getMeta('silent'):
-                                logger.warn("funcva: 0x%x opva: 0x%x:  %r   (%r) (in emumon prehook)", funcva, starteip, op, e)
+                                logger.warn("funcva: 0x%x opva: 0x%x:  %r   (%r) (in emumon prehook) %s", funcva, starteip, op, e, self.emumon)
 
 
                         if self.emustop:

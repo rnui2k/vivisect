@@ -5,7 +5,11 @@ except ImportError:
 
 import vivisect
 
+
 vivsig_cpickle = 'VIV'.ljust(8,'\x00')
+
+if isinstance(vivsig_cpickle, str):
+    vivsig_cpickle = vivsig_cpickle.encode('utf-8')
 
 def saveWorkspaceChanges(vw, filename):
     elist = vw.exportWorkspaceChanges()

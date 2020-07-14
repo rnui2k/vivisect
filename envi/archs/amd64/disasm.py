@@ -309,7 +309,10 @@ class Amd64Disasm(e_i386.i386Disasm):
                 isvex = True
                 if p == PREFIX_VEX2:
                     offset += 1
-                    imm1 = ord(bytez[offset])
+                    if isinstance(bytez[offset], int):
+                        imm1 = bytez[offset]
+                    else:
+                        imm1 = ord(bytez[offset])
                     # shouldn't in 64-bit mode, but in 32-bit, this keeps LES from colliding
                     # TODO: So we're always in 64 bit here. This will need to be here once we unify 32/64 decoding
                     #if imm1 & 0xc0 != 0xc0:
@@ -326,12 +329,18 @@ class Amd64Disasm(e_i386.i386Disasm):
                     combined_mand_prefixes = vex_pp_table[pp]
 
                 elif p == PREFIX_VEX3:
-                    imm1 = ord(bytez[offset+1])
+                    if isinstance(bytez[offset+1], int):
+                        imm1 = bytez[offset+1]
+                    else:
+                        imm1 = ord(bytez[offset+1])
                     offset += 2
                     # TODO: So we're always in 64 bit here. This will need to be here once we unify 32/64 decoding
                     #if imm1 & 0xc0 != 0xc0:
                         #break
-                    imm2 = ord(bytez[offset])
+                    if isinstance(bytez[offset], int):
+                        imm2 = bytez[offset]
+                    else:
+                        imm2 = ord(bytez[offset])
                     inv1 = imm1 ^ 0xff
                     inv2 = imm2 ^ 0xff
 

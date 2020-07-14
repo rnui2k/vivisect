@@ -3,7 +3,7 @@ logging.basicConfig()
 logger = logging.getLogger(__name__)
 import unittest
 
-import Elf
+from . import Elf
 import vivisect.cli as viv_cli
 import vivisect.tests.helpers as helpers
 import vivisect.analysis.elf as vae
