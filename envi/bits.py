@@ -168,9 +168,9 @@ def getFormat(size, big_endian=False, signed=False):
     '''
     Returns the proper struct format for numbers up to 8 bytes in length
     Endianness and Signedness aware.
-    
+
     Only useful for *full individual* numbers... ie. 1, 2, 4, 8.  Numbers
-    of 24-bits (3), 40-bit (5), 48-bits (6) or 56-bits (7) are not accounted 
+    of 24-bits (3), 40-bit (5), 48-bits (6) or 56-bits (7) are not accounted
     for here and will return None.
     '''
     return master_fmts[signed][big_endian][size]
@@ -179,32 +179,32 @@ def getFloatFormat(size, big_endian=False):
     '''
     Returns the proper struct format for numbers up to 8 bytes in length
     Endianness and Signedness aware.
-    
+
     Only useful for *full individual* numbers... ie. 1, 2, 4, 8.  Numbers
-    of 24-bits (3), 40-bit (5), 48-bits (6) or 56-bits (7) are not accounted 
+    of 24-bits (3), 40-bit (5), 48-bits (6) or 56-bits (7) are not accounted
     for here and will return None.
     '''
     return fmt_floats[big_endian][size]
 
-def parsebytes(bytes, offset, size, sign=False, bigend=False):
+def parsebytes(bytez, offset, size, sign=False, bigend=False):
     """
     Mostly for pulling immediates out of strings...
     """
     if size > 8:
-        return slowparsebytes(bytes, offset, size, sign=sign, bigend=bigend)
+        return slowparsebytes(bytez, offset, size, sign=sign, bigend=bigend)
     if bigend:
         f = be_fmt_chars[size]
     else:
         f = le_fmt_chars[size]
     if f == None:
-        return slowparsebytes(bytes, offset, size, sign=sign, bigend=bigend)
-    d = bytes[offset:offset+size]
+        return slowparsebytes(bytez, offset, size, sign=sign, bigend=bigend)
+    d = bytez[offset:offset+size]
     x = struct.unpack(f, d)[0]
     if sign:
         x = signed(x, size)
     return x
 
-def slowparsebytes(bytes, offset, size, sign=False, bigend=False):
+def slowparsebytes(bytez, offset, size, sign=False, bigend=False):
     if bigend:
         begin = offset
         inc = 1
@@ -216,7 +216,10 @@ def slowparsebytes(bytes, offset, size, sign=False, bigend=False):
     ioff = 0
     for x in range(size):
         ret = ret << 8
-        ret |= ord(bytes[begin+ioff])
+        if isinstance(bytez[begin+ioff], int):
+            ret |= bytez[begin+ioff]
+        else:
+            ret |= ord(bytez[begin+ioff])
         ioff += inc
     if sign:
         ret = signed(ret, size)
@@ -307,7 +310,7 @@ def binbytes(binstr):
         binstr = binstr[8:]
     return bytez
 
-def parsebits(bytes, offset, bitoff, bitsize):
+def parsebits(bytez, offset, bitoff, bitsize):
     '''
     Parse bitsize bits from the bit offset bitoff beginning
     at offset bytes.
@@ -323,7 +326,10 @@ def parsebits(bytes, offset, bitoff, bitsize):
 
         modoff = addbit % 8
 
-        o = ord(bytes[addoff])
+        if isinstance(bytez[addoff], int):
+            o = bytez[addoff]
+        else:
+            o = ord(bytez[addoff])
         val = (val << 1) + ((o >> (7 - modoff)) & 1)
 
         cnt += 1
