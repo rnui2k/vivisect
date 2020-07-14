@@ -642,16 +642,19 @@ class Amd64Disasm(e_i386.i386Disasm):
                 o.reg += REX_BUMP
         return o
 
-    def ameth_vexh(self, bytes, offset, tsize, prefixes, operflags):
+    def ameth_vexh(self, bytez, offset, tsize, prefixes, operflags):
         '''
         So this is here because instructions like movss and movsd are ambiguous in their
         2/3 operand state without first jumping ahead to the modrm byte. If modrm refers to
         memory, we skip this state and just go on to the next addressing method. If it refers
         to a register, pass through to self.ameth_h
         '''
-        mod, reg, rm = self.parse_modrm(ord(bytes[offset]), prefixes)
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset], prefixes)
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]), prefixes)
         if mod == 3:
-            return self.ameth_h(bytes, offset, tsize, prefixes, operflags)
+            return self.ameth_h(bytez, offset, tsize, prefixes, operflags)
         else:
             return (0, None)
 
@@ -663,8 +666,8 @@ class Amd64Disasm(e_i386.i386Disasm):
             reg += e_i386.RMETA_LOW128
         return (1, i386RegOper(reg + idx, tsize))
 
-    def ameth_g(self, bytes, offset, tsize, prefixes, operflags):
-        osize, oper = e_i386.i386Disasm.ameth_g(self, bytes, offset, tsize, prefixes, operflags)
+    def ameth_g(self, bytez, offset, tsize, prefixes, operflags):
+        osize, oper = e_i386.i386Disasm.ameth_g(self, bytez, offset, tsize, prefixes, operflags)
         # TODO: Disallowing reg_rip is probably wrong
         # TODO: the addr override operates off the default of the instruction, so we need to grab that
         if oper.tsize == 4:
@@ -765,7 +768,11 @@ class Amd64Disasm(e_i386.i386Disasm):
         return osize, oper
 
     def ameth_w(self, bytez, offset, tsize, prefixes, operflags):
-        mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+        if isinstance(bytez[offset], int):
+            mod, reg, rm = self.parse_modrm(bytez[offset])
+        else:
+            mod, reg, rm = self.parse_modrm(ord(bytez[offset]))
+
         if mod == 3:
             vvvv = self.ROFFSETSIMD
             if not (prefixes & PREFIX_VEX_L) or operflags & OP_NOVEXL:

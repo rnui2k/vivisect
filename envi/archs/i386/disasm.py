@@ -755,7 +755,10 @@ class i386Disasm:
                 oper = i386SibOper(opersize, reg=base, index=index, scale=scale_lookup[scale], disp=disp)
                 return (size,oper)
             else:
-                x = e_bits.signed(ord(bytez[offset+size]), 1)
+                if isinstance(bytez[offset+size], int):
+                    x = e_bits.signed(bytez[offset+size], 1)
+                else:
+                    x = e_bits.signed(ord(bytez[offset+size]), 1)
                 size += 1
                 return(size, i386RegMemOper(regbase+rm, opersize, disp=x))
 
