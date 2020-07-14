@@ -70,7 +70,7 @@ class SignatureTree:
             choices[choice] = nnode
         return nnode
 
-    def addSignature(self, bytes, masks=None, val=None):
+    def addSignature(self, bytez, masks=None, val=None):
         """
         Add a signature to the search tree.  If masks goes unspecified, it will be
         assumed to be all ones (\\xff * len(bytes)).
@@ -80,28 +80,31 @@ class SignatureTree:
         """
         # FIXME perhaps make masks None on all ff's
         if masks == None:
-            masks = "\xff" * len(bytes)
+            masks = "\xff" * len(bytez)
 
         if val == None:
             val = True
 
         # Detect and skip duplicate additions...
-        bytekey = bytes + masks
+        bytekey = bytez + masks
         if self.sigs.get(bytekey) != None:
             return
 
         self.sigs[bytekey] = True
-
-        byteord = [ord(c) for c in bytes]
-        maskord = [ord(c) for c in masks]
+        if isinstance(c, int):
+            byteord = [ord(c) for c in bytez]
+            maskord = [ord(c) for c in masks]
+        else:
+            byteord = [ord(c) for c in bytez]
+            maskord = [ord(c) for c in masks]
 
         siginfo = (byteord, maskord, val)
         self._addChoice(siginfo, self.basenode)
 
-    def isSignature(self, bytes, offset=0):
-        return self.getSignature(bytes, offset=offset) != None
+    def isSignature(self, bytez, offset=0):
+        return self.getSignature(bytez, offset=offset) != None
 
-    def getSignature(self, bytes, offset=0):
+    def getSignature(self, bytez, offset=0):
         matches = []
         node = self.basenode
         while True:
@@ -115,10 +118,13 @@ class SignatureTree:
                 for i in range(depth, len(sbytes)):
                     realoff = offset + i
                     # we still have pieces of the signature left to match, but bytes wasn't int enough
-                    if realoff >= len(bytes):
+                    if realoff >= len(bytez):
                         is_match = False
                         break
-                    masked = ord(bytes[realoff]) & smasks[i]
+                    if isinstance(bytez[realoff], int):
+                        masked = bytez[realoff] & smasks[i]
+                    else:
+                        masked = ord(bytez[realoff]) & smasks[i]
                     if masked != sbytes[i]:
                         is_match = False
                         break
@@ -130,10 +136,15 @@ class SignatureTree:
             node = None # Lets go find a new one
             for sig in sigs:
                 sbytes, smasks, sobj = sig
-                if offset+depth >= len(bytes):
+                if offset+depth >= len(bytez):
                     continue
                 # we've reached the end of this signature, so we're just going to mask the rest
-                masked = ord(bytes[offset+depth]) & smasks[depth]
+
+
+                if isinstance(bytez[offset+depth], int):
+                    masked = bytez[offset+depth] & smasks[depth]
+                else:
+                    masked = ord(bytez[offset+depth]) & smasks[depth]
                 if sbytes[depth] == masked: # We have a winner!
                     # FIXME find the *best* winner! (because of masking)
                     node = choices[masked]
