@@ -788,7 +788,7 @@ class i386Disasm:
         Return a tuple of (size, scale, index, base, imm)
         """
         if isinstance(bytez[offset], int):
-            byte = ord(bytez[offset])
+            byte = bytez[offset]
         else:
             byte = ord(bytez[offset])
         scale = (byte >> 6) & 0x3
