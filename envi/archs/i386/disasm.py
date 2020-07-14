@@ -899,7 +899,10 @@ class i386Disasm:
                 prefixes = all_prefixes & (~onehot)
             else:
                 offset = mainbyte
-                obyte = ord(bytez[offset])
+                if isinstance(bytez[offset], int):
+                    obyte = bytez[offset]
+                else:
+                    obyte = ord(bytez[offset])
 
             tabdesc = all_tables[0]
             while True:
