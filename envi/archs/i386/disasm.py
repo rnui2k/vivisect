@@ -853,8 +853,10 @@ class i386Disasm:
         last_pref = 0
 
         while True:
-
-            obyte = ord(bytez[offset])
+            if isinstance(bytez[offset], int):
+                obyte = bytez[offset]
+            else:
+                obyte = ord(bytez[offset])
             # print("PREFIXBYTE: 0x%x" % obyte)
 
             # This line changes in 64 bit mode
@@ -869,7 +871,10 @@ class i386Disasm:
         # At this point we should have all the possible prefixes, but some may be mandatory ones that we
         # need to not use as display prefixes and use as jumps in the table instead.
         # So we're going to lie to the rest of the code in order to use them as we want
-        obyte = ord(bytez[offset])
+        if isinstance(bytez[offset], int):
+            obyte = bytez[offset]
+        else:
+            obyte = ord(bytez[offset])
         ppref = [(None, None)]
         # print("PREFXIES: 0x%x" % all_prefixes)
         if obyte == 0x0f and MANDATORY_PREFIXES[last_pref]:
