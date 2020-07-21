@@ -24,5 +24,3 @@ def calculate_catmullrom(points, steps = 30):
         for t in percents:
             ret.append(spline4p(t, points[i-1], points[i], points[i+1], points[i+2]))
     return ret
-            
-
