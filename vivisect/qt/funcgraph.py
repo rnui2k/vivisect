@@ -502,11 +502,7 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
 
             try:
                 addr = self.vw.parseExpression(expr)
-<<<<<<< HEAD
             except Exception as  e:
-=======
-            except Exception as e:
->>>>>>> master
                 self.mem_canvas.addText('Invalid Address: %s (%s)' % (expr, e))
                 return
 
@@ -539,11 +535,7 @@ class VQVivFuncgraphView(vq_hotkey.HotKeyMixin, e_qt_memory.EnviNavMixin, QWidge
 
             self._renderDoneSignal.emit()
         except Exception as e:
-<<<<<<< HEAD
-            print(e)
-=======
             self.vw.vprint(str(e))
->>>>>>> master
 
     def loadDefaultRenderers(self):
         vivrend = viv_rend.WorkspaceRenderer(self.vw)

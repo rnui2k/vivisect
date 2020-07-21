@@ -76,10 +76,6 @@ class StructParser:
             return lambda: vs_prim.v_str(size=size)
 
         return lambda: vstruct.VArray( [ cls() for i in range(size) ] )
-<<<<<<< HEAD
-        #return [ cls() for i in range(size) ]
-=======
->>>>>>> master
 
     def c_getIdentType(self, itelem):
         ename, einst = itelem
