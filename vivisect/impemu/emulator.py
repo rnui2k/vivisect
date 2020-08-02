@@ -349,7 +349,6 @@ class WorkspaceEmulator:
                             if not self.getMeta('silent'):
                                 logger.warn("funcva: 0x%x opva: 0x%x:  %r   (%r) (in emumon prehook) %s", funcva, starteip, op, e, self.emumon)
 
-
                         if self.emustop:
                             return
                     # Execute the opcode
@@ -357,7 +356,6 @@ class WorkspaceEmulator:
                     vg_path.getNodeProp(self.curpath, 'valist').append(starteip)
 
                     endeip = self.getProgramCounter()
-
                     if self.emumon:
                         try:
                             self.emumon.posthook(self, op, endeip)
@@ -371,7 +369,6 @@ class WorkspaceEmulator:
                     iscall = self.checkCall(starteip, endeip, op)
                     if self.emustop:
                         return
-
                     # If it wasn't a call, check for branches, if so, add them to
                     # the todo list and go around again...
                     if not iscall:
@@ -589,7 +586,7 @@ class WorkspaceEmulator:
         # Read from the emulator's pages if we havent resolved it yet
         probeok = self.probeMemory(va, size, e_mem.MM_READ)
         if self._safe_mem and not probeok:
-            return 'A' * size
+            return b'\x41' * size
 
         return e_mem.MemoryObject.readMemory(self, va, size)
 

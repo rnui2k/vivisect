@@ -148,25 +148,26 @@ class IntelEmulator(i386RegisterContext, envi.Emulator):
         return bool(flags & which)
 
     def readMemValue(self, addr, size):
-        bytes = self.readMemory(addr, size)
-        if bytes == None:
+        bytez = self.readMemory(addr, size)
+        if bytez == None:
             return None
         #FIXME change this (and all uses of it) to passing in format...
-        if len(bytes) != size:
-            raise Exception("Read Gave Wrong Length At 0x%.8x (va: 0x%.8x wanted %d got %d)" % (self.getProgramCounter(),addr, size, len(bytes)))
+        if len(bytez) != size:
+            raise Exception("Read Gave Wrong Length At 0x%.8x (va: 0x%.8x wanted %d got %d)" %
+                    (self.getProgramCounter(),addr, size, len(bytez)))
         if size == 1:
-            return struct.unpack("B", bytes)[0]
+            return struct.unpack("B", bytez)[0]
         elif size == 2:
-            return struct.unpack("<H", bytes)[0]
+            return struct.unpack("<H", bytez)[0]
         elif size == 4:
-            return struct.unpack("<I", bytes)[0]
+            return struct.unpack("<I", bytez)[0]
         elif size == 8:
-            return struct.unpack("<Q", bytes)[0]
+            return struct.unpack("<Q", bytez)[0]
         elif size == 16:
-            nums = struct.unpack("<QQ", bytes)
+            nums = struct.unpack("<QQ", bytez)
             return nums[0] | (nums[1] << 64)
         elif size == 32:
-            nums = struct.unpack("<QQQQ", bytes)
+            nums = struct.unpack("<QQQQ", bytez)
             return nums[0] | (nums[1] << 64) | (nums[2] << 128) | (nums[3] << 192)
 
     def writeMemValue(self, addr, value, size):
@@ -205,17 +206,17 @@ class IntelEmulator(i386RegisterContext, envi.Emulator):
         #       other than None, that is the new eip
         if op.va != None:
             self.setProgramCounter(op.va)
-
         meth = self.op_methods.get(op.mnem, None)
         if meth == None:
             # print("0x%x: Intel Emulator needs %s" % (op.va, str(op)))
             raise e_exc.UnsupportedInstruction(self, op)
 
+        #import pdb
+        if op.mnem == 'ret':
         newpc = meth(op)
         if newpc != None:
             self.setProgramCounter(newpc)
             return
-
         if op.prefixes & PREFIX_REP:
 
             ecx = self.getRegister(REG_ECX) - 1
@@ -228,11 +229,9 @@ class IntelEmulator(i386RegisterContext, envi.Emulator):
             if ecx != 0:
                 self.setProgramCounter(op.va)
                 return
-
         pc = self.getProgramCounter()
         newpc = pc+op.size
         self.setProgramCounter(newpc)
-
     ###### Conditional Callbacks #####
 
     # NOTE: for ease of validation, these are in the same order as the Jcc

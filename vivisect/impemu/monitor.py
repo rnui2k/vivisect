@@ -76,7 +76,6 @@ class AnalysisMonitor(EmulationMonitor):
         # Add emulation anomalies
         for row in self.getAnomalies():
             va,msg = row
-            print("ROW", hex(row[0]), row)
             vw.setVaSetRow("Emulation Anomalies", row)
             vw.setComment(va, 'Emu Anomaly: %s' % (msg,),check=True)
 
