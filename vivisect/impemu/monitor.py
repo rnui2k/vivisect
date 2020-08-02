@@ -140,9 +140,11 @@ class AnalysisMonitor(EmulationMonitor):
                     operva = o.getOperAddr(op, emu)
                     # keep track of the max here, but save it for later too...
                     stackoff = emu.getStackOffset( operva )
+                    if stackoff is None:
+                        stackoff = -1
+
                     if stackoff >= 0: # None is not >= 0 ;)
                         self.stackmax = max( self.stackmax, stackoff )
-
                     self.operrefs.append((starteip,i,operva,o.tsize,stackoff,discrete))
 
         if op.iflags & BRANCH_FLAGS:
