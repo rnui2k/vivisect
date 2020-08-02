@@ -213,7 +213,7 @@ class IntelEmulator(i386RegisterContext, envi.Emulator):
 
         #import pdb
         if op.mnem == 'ret':
-        newpc = meth(op)
+            newpc = meth(op)
         if newpc != None:
             self.setProgramCounter(newpc)
             return
