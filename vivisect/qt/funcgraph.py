@@ -15,7 +15,8 @@ import vivisect.tools.graphutil as viv_graphutil
 
 try:
     from PyQt5.QtCore   import pyqtSignal, QPoint, PYQT_VERSION_STR
-    from PyQt5          import QtCore, QtGui, QtWebKit
+    from PyQt5          import QtCore, QtGui, QtWebEngineWidgets
+    #from PyQt5          import QtCore, QtGui, QtWebKit
     from PyQt5.QtWidgets import *
 except:
     from PyQt4.QtCore   import pyqtSignal, QPoint, PYQT_VERSION_STR

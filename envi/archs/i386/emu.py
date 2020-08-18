@@ -211,9 +211,7 @@ class IntelEmulator(i386RegisterContext, envi.Emulator):
             # print("0x%x: Intel Emulator needs %s" % (op.va, str(op)))
             raise e_exc.UnsupportedInstruction(self, op)
 
-        #import pdb
-        if op.mnem == 'ret':
-            newpc = meth(op)
+        newpc = meth(op)
         if newpc != None:
             self.setProgramCounter(newpc)
             return

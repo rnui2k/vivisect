@@ -4,8 +4,10 @@ except ImportError:
     from html import escape as cgi_escape
 
 try:
-    from PyQt5 import QtCore, QtGui, QtWebKit, QtWebKitWidgets
-    from PyQt5.QtWebKitWidgets import *
+    from PyQt5 import QtCore, QtGui, QtWebEngineWidgets
+    #from PyQt5 import QtCore, QtGui, QtWebKit, QtWebKitWidgets
+    from PyQt5.QtWebEngineWidgets import *
+    #from PyQt5.QtWebKitWidgets import *
     from PyQt5.QtWidgets import *
 except ImportError as e:
     print(e)
@@ -27,15 +29,18 @@ qt_vertical = 2
 from vqt.main import *
 from vqt.common import *
 
-class LoggerPage(QWebPage):
+class LoggerPage(QWebEnginePage):
+#class LoggerPage(QWebPage):
     def javaScriptConsoleMessage(self, msg, line, source):
         print('%s line %d: %s' % (source, line, msg))
 
-class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
+class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebEngineView):
+#class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
 
     def __init__(self, mem, syms=None, parent=None, **kwargs):
         e_memcanvas.MemoryCanvas.__init__(self, mem=mem, syms=syms)
-        QWebView.__init__(self, parent=parent, **kwargs)
+        QWebEngineView.__init__(self, parent=parent, **kwargs)
+        #QWebView.__init__(self, parent=parent, **kwargs)
 
         self._canv_cache = None
         self._canv_curva = None
@@ -47,9 +52,11 @@ class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
         htmlpage = e_q_html.template.replace('{{{jquery}}}', e_q_jquery.jquery_2_1_0)
         self.setContent(htmlpage.encode('utf-8'))
 
-        frame = self.page().mainFrame()
-        frame.evaluateJavaScript(e_q_jquery.jquery_2_1_0)
-        frame.addToJavaScriptWindowObject('vnav', self)
+        frame = self.page()
+        #frame = self.page().mainFrame()
+        frame.runJavaScript(e_q_jquery.jquery_2_1_0)
+        #frame.evaluateJavaScript(e_q_jquery.jquery_2_1_0)
+        #frame.addToJavaScriptWindowObject('vnav', self)
         frame.contentsSizeChanged.connect(self._frameContentsSizeChanged)
 
         # Allow our parent to handle these...
@@ -194,7 +201,8 @@ class VQMemoryCanvas(e_memcanvas.MemoryCanvas, QWebView):
 
     @idlethreadsync
     def clearCanvas(self):
-        frame = self.page().mainFrame()
+        frame = self.page()
+        #frame = self.page().mainFrame()
         elem = frame.findFirstElement(self._canv_rendtagid)
         elem.setInnerXml('')
 
